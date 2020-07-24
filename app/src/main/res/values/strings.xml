@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Royal Transport Group</string>
+
+    <!--логин-->
+    <string name="edit_text_hint_login">Login</string>
+    <string name="edit_text_hint_password">Password</string>
+    <string name="button_text_login">Sign in</string>
 </resources>

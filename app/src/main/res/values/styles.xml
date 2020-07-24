@@ -1,10 +1,30 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="goldStrokeButtonStyle">
+        <item name="android:background">@drawable/button_gold_stroke</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">#FF9638</item>
+        <item name="rippleColor">#FF9638</item>
+        <item name="strokeColor">#FF9638</item>
+        <item name="backgroundTint">#fff</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <style name="greenEditText" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">#000</item>
+        <item name="hintTextColor">#000</item>
+        <item name="android:textColor">#000</item>
+        <item name="boxBackgroundColor">#fff</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="android:textColorHint">#000</item>
     </style>
 
 </resources>

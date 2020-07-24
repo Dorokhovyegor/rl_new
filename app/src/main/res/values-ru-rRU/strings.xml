@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Royal Transport Group</string>
+
+    <!--логин-->
+    <string name="edit_text_hint_login">Логин</string>
+    <string name="edit_text_hint_password">Пароль</string>
+    <string name="button_text_login">Войти</string>
+</resources>
