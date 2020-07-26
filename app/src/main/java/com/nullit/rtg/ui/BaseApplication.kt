@@ -1,8 +1,7 @@
-package com.nullit.rtg.framework.presentation
+package com.nullit.rtg.ui
 
 import com.nullit.rtg.di.graph.DaggerAppComponent
 import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
 
 class BaseApplication: dagger.android.support.DaggerApplication() {
 

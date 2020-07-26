@@ -3,7 +3,7 @@ package com.nullit.rtg.di.graph
 import android.app.Application
 import com.nullit.rtg.di.modules.ActivityBuildersModule
 import com.nullit.rtg.di.modules.ViewModelModule
-import com.nullit.rtg.framework.presentation.BaseApplication
+import com.nullit.rtg.ui.BaseApplication
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

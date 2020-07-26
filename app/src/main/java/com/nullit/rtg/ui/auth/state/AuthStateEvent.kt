@@ -1,4 +1,4 @@
-package com.nullit.rtg.framework.presentation.auth.state
+package com.nullit.rtg.ui.auth.state
 
 sealed class AuthStateEvent {
 

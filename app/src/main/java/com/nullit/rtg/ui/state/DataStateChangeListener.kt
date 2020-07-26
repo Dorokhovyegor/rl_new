@@ -1,4 +1,4 @@
-package com.nullit.rtg.business.domain.state
+package com.nullit.rtg.ui.state
 
 interface DataStateChangeListener {
     fun onDataStateChange(dataState: DataState<*>?)

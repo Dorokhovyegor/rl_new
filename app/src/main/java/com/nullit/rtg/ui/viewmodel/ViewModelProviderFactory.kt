@@ -1,4 +1,4 @@
-package com.nullit.rtg.framework.viewmodel
+package com.nullit.rtg.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

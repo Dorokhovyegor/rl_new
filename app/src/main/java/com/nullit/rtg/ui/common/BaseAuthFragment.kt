@@ -1,10 +1,10 @@
-package com.nullit.rtg.framework.presentation.common
+package com.nullit.rtg.ui.common
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.nullit.rtg.framework.presentation.auth.AuthViewModel
-import com.nullit.rtg.framework.viewmodel.ViewModelProviderFactory
+import com.nullit.rtg.ui.auth.AuthViewModel
+import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -28,6 +28,5 @@ abstract class BaseAuthFragment : DaggerFragment() {
     private fun cancelActiveJobs() {
         //viewModel.cancelActiveJobs()
     }
-
 
 }

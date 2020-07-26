@@ -1,11 +1,11 @@
-package com.nullit.rtg.framework.presentation.auth
+package com.nullit.rtg.ui.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nullit.rtg.R
-import com.nullit.rtg.framework.presentation.common.BaseAuthFragment
+import com.nullit.rtg.ui.common.BaseAuthFragment
 
 class SplashFragment : BaseAuthFragment() {
 

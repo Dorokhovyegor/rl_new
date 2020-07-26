@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.nullit.rtg.framework.presentation.auth.LoginFragment"
+        android:name="com.nullit.rtg.ui.auth.LoginFragment"
         android:label="LoginFragment" />
 
 </navigation>

@@ -1,7 +1,7 @@
 package com.nullit.rtg.di.modules
 
 import androidx.lifecycle.ViewModelProvider
-import com.nullit.rtg.framework.viewmodel.ViewModelProviderFactory
+import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
 import dagger.Binds
 import dagger.Module
 

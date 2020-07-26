@@ -1,4 +1,4 @@
-package com.nullit.rtg.framework.presentation.auth
+package com.nullit.rtg.ui.auth
 
 import android.os.Bundle
 import android.os.Handler
@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nullit.rtg.R
-import com.nullit.rtg.framework.presentation.common.BaseAuthFragment
-import com.nullit.rtg.framework.viewmodel.ViewModelProviderFactory
+import com.nullit.rtg.ui.common.BaseAuthFragment
 import kotlinx.android.synthetic.main.fragment_login.*
-import javax.inject.Inject
 
 class LoginFragment : BaseAuthFragment() {
 

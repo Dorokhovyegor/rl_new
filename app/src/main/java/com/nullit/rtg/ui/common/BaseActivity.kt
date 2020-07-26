@@ -1,4 +1,4 @@
-package com.nullit.rtg.framework.presentation.common
+package com.nullit.rtg.ui.common
 
 import dagger.android.support.DaggerAppCompatActivity
 

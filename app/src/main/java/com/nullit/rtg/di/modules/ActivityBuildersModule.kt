@@ -1,6 +1,6 @@
 package com.nullit.rtg.di.modules
 
-import com.nullit.rtg.framework.presentation.MainActivity
+import com.nullit.rtg.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

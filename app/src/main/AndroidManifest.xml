@@ -8,9 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".framework.presentation.BaseApplication"
+        android:name="com.nullit.rtg.ui.BaseApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".framework.presentation.MainActivity">
+        <activity android:name="com.nullit.rtg.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,9 +1,11 @@
-package com.nullit.rtg.business.domain.state
+package com.nullit.rtg.ui.state
 
 // оборачиваем viewState Этим классом
 data class DataState<T>(
     var error: Event<StateError>? = null,
-    var loading: Loading = Loading(false),
+    var loading: Loading = Loading(
+        false
+    ),
     var data: Data<T>? = null
 ) {
     companion object {
@@ -45,7 +47,9 @@ data class DataState<T>(
             return DataState(
                 data = Data(
                     Event.dataEvent(data),
-                    Event.responseEvent(response)
+                    Event.responseEvent(
+                        response
+                    )
                 )
             )
         }

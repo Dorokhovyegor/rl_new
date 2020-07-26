@@ -1,7 +1,7 @@
 package com.nullit.rtg.di.modules
 
-import com.nullit.rtg.framework.presentation.auth.LoginFragment
-import com.nullit.rtg.framework.presentation.auth.RegistrationFragment
+import com.nullit.rtg.ui.auth.LoginFragment
+import com.nullit.rtg.ui.auth.RegistrationFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

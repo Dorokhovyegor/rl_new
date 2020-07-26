@@ -1,7 +1,7 @@
-package com.nullit.rtg.framework.presentation.auth.state
+package com.nullit.rtg.ui.auth.state
 
-import com.nullit.rtg.framework.presentation.auth.state.LoginFields.LoginError.Companion.ERROR_FIELDS_SHOULD_NOT_BE_EMPTY
-import com.nullit.rtg.framework.presentation.auth.state.LoginFields.LoginError.Companion.ERROR_NONE
+import com.nullit.rtg.ui.auth.state.LoginFields.LoginError.Companion.ERROR_FIELDS_SHOULD_NOT_BE_EMPTY
+import com.nullit.rtg.ui.auth.state.LoginFields.LoginError.Companion.ERROR_NONE
 
 data class AuthViewState(
     var registrationFields: RegistrationFields = RegistrationFields(),

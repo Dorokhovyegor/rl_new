@@ -1,12 +1,8 @@
-package com.nullit.rtg.framework.presentation
+package com.nullit.rtg.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Window
 import com.nullit.rtg.R
-import com.nullit.rtg.framework.presentation.common.BaseActivity
-import dagger.android.DaggerActivity
-import dagger.android.support.DaggerAppCompatActivity
+import com.nullit.rtg.ui.common.BaseActivity
 
 class MainActivity : BaseActivity() {
 

@@ -1,10 +1,10 @@
-package com.nullit.rtg.framework.presentation.common
+package com.nullit.rtg.ui.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.nullit.rtg.business.domain.state.DataState
+import com.nullit.rtg.ui.state.DataState
 
 abstract class BaseViewModel<StateEvent, ViewState> : ViewModel() {
 

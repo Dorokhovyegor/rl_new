@@ -1,4 +1,4 @@
-package com.nullit.rtg.business.domain.state
+package com.nullit.rtg.ui.state
 
 data class Loading(val isLoading: Boolean)
 data class Data<T>(val data: Event<T>?, val response: Event<Response>?)
