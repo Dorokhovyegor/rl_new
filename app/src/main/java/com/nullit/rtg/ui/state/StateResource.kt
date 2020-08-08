@@ -1,17 +1,13 @@
 package com.nullit.rtg.ui.state
 
-data class Loading(val isLoading: Boolean)
-data class Data<T>(val data: Event<T>?, val response: Event<Response>?)
-data class StateError(val response: Response)
+data class Message(val message: String?, val messageType: MessageType)
+sealed class MessageType{
 
-data class Response(val message: String?, val responseType: ResponseType)
-sealed class ResponseType{
+    object Snackbar : MessageType()
 
-    class Toast: ResponseType()
+    object Dialog : MessageType()
 
-    class Dialog: ResponseType()
-
-    class None: ResponseType()
+    object None : MessageType()
 }
 
 /**
@@ -56,7 +52,7 @@ open class Event<out T>(private val content: T) {
         }
 
         // we don't want an event if the response is null
-        fun responseEvent(response: Response?): Event<Response>?{
+        fun responseEvent(response: Message?): Event<Message>?{
             response?.let{
                 return Event(response)
             }

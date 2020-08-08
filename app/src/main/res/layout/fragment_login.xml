@@ -34,11 +34,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginEditText"
-            android:textColor="#000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:inputType="textEmailAddress"
             android:lines="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:textColor="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -47,19 +47,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        app:endIconTint="#000"
         android:layout_marginTop="24dp"
         android:hint="@string/edit_text_hint_password"
         app:endIconMode="password_toggle"
+        app:endIconTint="#000"
         app:layout_constraintTop_toBottomOf="@id/loginTextInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
-            android:textColor="#000"
-            android:lines="1"
             android:layout_height="match_parent"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:lines="1"
+            android:textColor="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -71,5 +71,22 @@
         android:layout_marginTop="32dp"
         android:text="@string/button_text_login"
         app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout" />
+
+    <View
+        android:id="@+id/backgroundProgress"
+        android:background="#80ECECEC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="16dp" />
+
+    <ProgressBar
+        android:id="@+id/circularProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -2,6 +2,7 @@ package com.nullit.rtg.di.graph
 
 import android.app.Application
 import com.nullit.rtg.di.modules.ActivityBuildersModule
+import com.nullit.rtg.di.modules.AppModule
 import com.nullit.rtg.di.modules.ViewModelModule
 import com.nullit.rtg.ui.BaseApplication
 import dagger.BindsInstance
@@ -15,7 +16,8 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         ActivityBuildersModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        AppModule::class
     ]
 )
 interface AppComponent : AndroidInjector<BaseApplication> {
