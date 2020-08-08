@@ -52,7 +52,7 @@ class LoginFragment : BaseAuthFragment() {
         })
 
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { authenticated ->
-            findNavController().navigate(R.id)
+            // todo navigate to ...
         })
     }
 }
