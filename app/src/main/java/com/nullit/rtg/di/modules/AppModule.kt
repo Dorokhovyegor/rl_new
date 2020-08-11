@@ -75,9 +75,10 @@ class AppModule {
 
     @Provides
     fun provideAuthRepository(
-        apiService: ApiService
+        apiService: ApiService,
+        userDao: UserDao
     ): AuthRepository {
-        return AuthRepositoryImpl(apiService = apiService)
+        return AuthRepositoryImpl(apiService = apiService, userDao = userDao)
     }
 
 }

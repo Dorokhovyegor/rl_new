@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#C9FFA8"
+    android:layout_height="match_parent"
+    tools:context=".ui.chat.ChatFragment">
+
+    <TextView
+        android:id="@+id/stateTextView"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Состояние"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progressCircular"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/stateTextView"
+        app:layout_constraintBottom_toBottomOf="@id/stateTextView"
+        app:layout_constraintStart_toEndOf="@id/stateTextView"
+        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        app:endIconMode="custom"
+        app:endIconTint="#000"
+        android:background="#fff"
+        app:endIconDrawable="@drawable/ic_send_message"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:lines="1"
+            android:textColor="#fff"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
