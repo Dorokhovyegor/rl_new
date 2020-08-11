@@ -1,32 +1,45 @@
 package com.nullit.features_chat.ui.chat
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 
-class BaseChatFragment : Fragment() {
+val ARG_CHAT = "chatId"
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+abstract class BaseChatFragment : Fragment() {
 
+    protected lateinit var chatViewModel: ChatViewModel
+    protected var chatId: Int? = 1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments?.getInt(ARG_CHAT) == null) {
+            Toast.makeText(activity, "Ошибка", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
+        chatId = arguments?.getInt(ARG_CHAT)
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
+        connect(chatId!!)
     }
 
     override fun onDetach() {
         super.onDetach()
+        disconnect()
+    }
+
+    protected fun connect(chatId: Int) {
+        chatViewModel.connect(chatId)
+    }
+
+    protected fun disconnect() {
+        chatId?.let {
+            chatViewModel.disconnect(it)
+        }
     }
 }

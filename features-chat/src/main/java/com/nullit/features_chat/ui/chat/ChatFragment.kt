@@ -12,25 +12,18 @@ import com.nullit.features_chat.R
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARH_CHAT = "chatId"
 
-class ChatFragment : Fragment() {
-
-    private var chatId: Int? = null
-    lateinit var chatViewModel: ChatViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            chatId = it.getInt(ARH_CHAT)
-        }
-        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
-    }
+class ChatFragment : BaseChatFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        chatViewModel.connect(chatId)
         return inflater.inflate(R.layout.fragment_chat, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     companion object {

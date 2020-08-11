@@ -20,7 +20,7 @@ class ChatActivity : BaseChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        connectToSocket()
+        //connectToSocket()
     }
 
     private fun connectToSocket() {
