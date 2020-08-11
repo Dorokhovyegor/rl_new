@@ -31,7 +31,7 @@ class ChatActivity : BaseChatActivity() {
         echo = Echo(options)
         echo?.connect({ success ->
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@ChatActivity, "Success", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChatActivity, success.toString(), Toast.LENGTH_SHORT).show()
             }
             listenForEvents()
         }, { error ->

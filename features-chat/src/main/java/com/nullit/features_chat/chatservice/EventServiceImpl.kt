@@ -24,6 +24,9 @@ class EventServiceImpl : EventService {
         echo.on(Constants.EVENT_CONNECT) {
             eventListener?.onConnect(it)
         }
+        echo.on(Constants.EVENT_CONNECT_TIMEOUT) {
+            eventListener?.onConnectTimeout(it)
+        }
         echo.on(Constants.EVENT_NEW_MESSAGE) {
             eventListener?.onNewMessage(it)
         }
