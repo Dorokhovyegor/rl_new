@@ -8,7 +8,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class FragmentBuildersModule {
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract fun contributeChatFragment(): ChatFragment
 
     @ContributesAndroidInjector

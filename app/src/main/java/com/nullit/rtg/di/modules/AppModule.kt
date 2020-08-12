@@ -73,6 +73,7 @@ class AppModule {
         return Dispatchers.IO
     }
 
+    @Singleton
     @Provides
     fun provideAuthRepository(
         apiService: ApiService,

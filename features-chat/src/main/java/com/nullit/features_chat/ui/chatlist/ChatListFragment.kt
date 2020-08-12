@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.nullit.features_chat.R
+import com.nullit.features_chat.ui.chat.BaseChatFragment
 import kotlinx.android.synthetic.main.fragment_chat_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -19,7 +20,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ChatListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatListFragment : Fragment() {
+class ChatListFragment : BaseChatFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

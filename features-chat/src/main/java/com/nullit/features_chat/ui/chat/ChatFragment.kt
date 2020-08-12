@@ -1,11 +1,12 @@
 package com.nullit.features_chat.ui.chat
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.nullit.features_chat.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -13,6 +14,17 @@ import com.nullit.features_chat.R
 private const val ARH_CHAT = "chatId"
 
 class ChatFragment : BaseChatFragment() {
+
+    protected var chatId: Int? = 1
+
+    override fun onStart() {
+        super.onStart()
+        if (arguments?.getInt(ARG_CHAT) == null) {
+            Toast.makeText(activity, "Ошибка", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
+        chatId = arguments?.getInt(ARG_CHAT)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +35,20 @@ class ChatFragment : BaseChatFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        connect(chatId!!)
+    }
 
+    private fun connect(chatId: Int) {
+        chatViewModel.connect(chatId)
+    }
+
+    private fun disconnect(chatId: Int) {
+        chatViewModel.disconnect(chatId)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        disconnect(chatId!!)
     }
 
     companion object {

@@ -1,45 +1,23 @@
 package com.nullit.features_chat.ui.chat
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import com.nullit.features_chat.utils.ViewModelProviderFactory
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 val ARG_CHAT = "chatId"
 
-abstract class BaseChatFragment : Fragment() {
+abstract class BaseChatFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
     protected lateinit var chatViewModel: ChatViewModel
-    protected var chatId: Int? = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments?.getInt(ARG_CHAT) == null) {
-            Toast.makeText(activity, "Ошибка", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
-        }
-        chatId = arguments?.getInt(ARG_CHAT)
-        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
-    }
-
-    override fun onStart() {
-        super.onStart()
-        connect(chatId!!)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        disconnect()
-    }
-
-    protected fun connect(chatId: Int) {
-        chatViewModel.connect(chatId)
-    }
-
-    protected fun disconnect() {
-        chatId?.let {
-            chatViewModel.disconnect(it)
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
     }
 }

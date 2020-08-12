@@ -51,5 +51,4 @@ constructor(
             chatRepository.sendMessage(message, chatId)
         }
     }
-
 }
