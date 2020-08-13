@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nullit.features_chat.R
-import com.nullit.features_chat.ui.chat.BaseChatFragment
+import com.nullit.features_chat.ui.BaseChatFragment
+import com.nullit.features_chat.ui.chatlist.adapters.ChatListAdapter
 import kotlinx.android.synthetic.main.fragment_chat_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,8 +45,12 @@ class ChatListFragment : BaseChatFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        goToChat.setOnClickListener {
+       /* goToChat.setOnClickListener {
             findNavController().navigate(R.id.action_chatListFragment_to_chatFragment)
+        }*/
+        chatListRecyclerView.apply {
+            adapter = ChatListAdapter()
+            layoutManager = LinearLayoutManager(context)
         }
     }
 

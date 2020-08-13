@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--dialog list values-->
+    <dimen name="dialog_item_height">75dp</dimen>
+    <dimen name="dialog_item_avatar_height">48dp</dimen>
+    <dimen name="dialog_item_avatar_margin_start">16dp</dimen>
+
+</resources>

@@ -1,8 +1,9 @@
-package com.nullit.features_chat.ui.chat
+package com.nullit.features_chat.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.nullit.features_chat.ui.chat.ChatViewModel
 import com.nullit.features_chat.utils.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject

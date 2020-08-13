@@ -59,10 +59,17 @@ dependencies {
     implementation "com.google.dagger:dagger-android:${dagger_android}"
     kapt "com.google.dagger:dagger-android-processor:${dagger_android}"
 
-    implementation "com.github.MrBin99:LaravelEchoAndroid:1.03"
-
     implementation ('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+
+    def retrofit2_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.1"
+
+    def circle_image_view = "3.1.0"
+    implementation "de.hdodenhof:circleimageview:${circle_image_view}"
 }

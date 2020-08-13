@@ -8,6 +8,8 @@ class ChatActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
+        supportActionBar?.hide()
         setContentView(R.layout.activity_chat)
     }
 }
