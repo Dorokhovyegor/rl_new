@@ -3,6 +3,7 @@ package com.nullit.features_chat.chatservice
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.nullit.features_chat.utils.Constants
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject

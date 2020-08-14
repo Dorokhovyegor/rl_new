@@ -14,7 +14,7 @@ class ChatListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return ChatViewHolder(view)
     }
 
-    override fun getItemCount(): Int = 14
+    override fun getItemCount(): Int = 5
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ChatViewHolder) {
@@ -29,5 +29,4 @@ class ChatListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             timeLastMessage.text = "15:45"
         }
     }
-
 }
