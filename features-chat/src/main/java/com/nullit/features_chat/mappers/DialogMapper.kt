@@ -27,7 +27,9 @@ constructor(
         val dialogList = ArrayList<DialogModel>()
         dialogListDto.dialogList.forEach { dialogDto ->
             val title = dialogDto.name.trim()
-            val lastMessage = when (dialogDto.lastMessage.typeMessage) {
+            val lastMessage = if (dialogDto.lastMessage == null) {
+                "Пока еще никто не написал"
+            } else when (dialogDto.lastMessage.typeMessage) {
                 MESSAGE_TEXT -> {
                     // todo change to stringProvider
                     dialogDto.lastMessage.textMessage

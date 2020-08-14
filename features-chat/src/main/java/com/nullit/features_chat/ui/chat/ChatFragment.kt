@@ -5,20 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.ARG_CHAT
 import com.nullit.features_chat.ui.BaseChatFragment
+import com.nullit.features_chat.utils.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.fragment_chat.*
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARH_CHAT = "chatId"
 
 class ChatFragment : BaseChatFragment() {
 
     protected var chatId: Int? = 1
+
+    @Inject
+    lateinit var viewModelProviderFactory: ViewModelProviderFactory
+    lateinit var chatViewModel: ChatViewModel
 
     override fun onStart() {
         super.onStart()
@@ -37,6 +42,7 @@ class ChatFragment : BaseChatFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
         connect(chatId!!)
         subscribeObserver()
     }

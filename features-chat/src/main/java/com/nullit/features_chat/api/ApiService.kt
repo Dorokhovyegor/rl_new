@@ -10,7 +10,8 @@ interface ApiService {
     @GET("/api/v1/chats")
     suspend fun requestDialogListByPage(
         @Header("Authorization") token: String,
-        @Query("qty") qty: Int
+        @Query("qty") qty: Int,
+        @Query("page") page: Int
     ): DialogListDto
 
 

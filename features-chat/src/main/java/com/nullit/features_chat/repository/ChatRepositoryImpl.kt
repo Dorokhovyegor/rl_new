@@ -42,7 +42,7 @@ constructor(
 
     override suspend fun requestDialogListByPage(page: Int): List<DialogModel> {
         // val token = tokenDao.getToken()
-        val result = apiService.requestDialogListByPage(getToken(), DIALOGS_PER_PAGE)
+        val result = apiService.requestDialogListByPage(getToken(), DIALOGS_PER_PAGE, page)
         val mappedResult = withContext(Dispatchers.Default) {
             dialogMapper.fromDialogListDtoToListDialogModel(result)
         }

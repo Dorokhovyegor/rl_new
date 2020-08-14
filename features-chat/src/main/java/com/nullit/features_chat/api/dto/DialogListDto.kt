@@ -14,7 +14,7 @@ data class DialogDto(
     @SerializedName("type") val typeChat: String, // personal, group
     @SerializedName("updated_at") val lastUpdate: String,
     @SerializedName("users") val userList: List<UserDto>,
-    @SerializedName("latest_message") val lastMessage: LastMessageDto
+    @SerializedName("latest_message") val lastMessage: LastMessageDto?
 )
 
 data class LastMessageDto(

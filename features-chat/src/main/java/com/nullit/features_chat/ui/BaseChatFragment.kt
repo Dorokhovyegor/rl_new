@@ -12,13 +12,8 @@ val ARG_CHAT = "chatId"
 
 abstract class BaseChatFragment : DaggerFragment() {
 
-    @Inject
-    lateinit var viewModelProviderFactory: ViewModelProviderFactory
-
-    protected lateinit var chatViewModel: ChatViewModel
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
+
     }
 }
