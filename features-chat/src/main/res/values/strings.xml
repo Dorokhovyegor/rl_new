@@ -1,8 +1,20 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!--dialog item-->
     <string name="no_messages_yet">Еще никто не писал</string>
     <string name="no_title_yet">Без названия</string>
+
+    <!--socket events-->
+    <string name="socket_events_connect_success">Подключился</string>
+    <string name="socket_events_error_connection">Ошибка подключения</string>
+    <string name="socket_events_attempt_reconnection">Попытка переподключения</string>
+    <string name="socket_events_reconnecting">Переподключение</string>
+    <string name="socket_events_error_reconnection">Ошибка переподключения</string>
+    <string name="socket_events_failed_reconnection">Ошибка переподключения</string>
+    <string name="socket_events_reconnection_success">Успешно переподключился</string>
+    <string name="socket_events_timeout">Таймаут</string>
+
+    <!--chat state-->
+    <string name="chat_state_connected">Подключено</string>
+    <string name="chat_state_error_connection">Ошибка подключения</string>
+    <string name="chat_state_connecting">Подключение…</string>
 </resources>

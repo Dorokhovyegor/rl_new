@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--   временные строчки-->
+    <string name="right_now">Только что</string>
+    <plurals name="minutesAgo">
+        <item quantity="one">%d минута назад</item>
+        <item quantity="few">%d минуты назад</item>
+        <item quantity="other">%d минут назад</item>
+    </plurals>
+    <plurals name="hoursAgo">
+        <item quantity="one">%d час назад</item>
+        <item quantity="few">%d часа назад</item>
+        <item quantity="other">%d часов назад</item>
+    </plurals>
+    <string name="yesterday">Вчера</string>
+</resources>

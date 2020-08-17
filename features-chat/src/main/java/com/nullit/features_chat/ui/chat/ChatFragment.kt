@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.nullit.core.StringProvider
 import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.ARG_CHAT
 import com.nullit.features_chat.ui.BaseChatFragment
@@ -19,11 +20,12 @@ private const val ARH_CHAT = "chatId"
 
 class ChatFragment : BaseChatFragment() {
 
-    protected var chatId: Int? = 1
-
+    @Inject
+    lateinit var stringProvider: StringProvider
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
-    lateinit var chatViewModel: ChatViewModel
+    private lateinit var chatViewModel: ChatViewModel
+    private var chatId: Int? = 1
 
     override fun onStart() {
         super.onStart()

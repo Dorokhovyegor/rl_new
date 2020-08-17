@@ -1,8 +1,8 @@
 package com.nullit.features_chat.mappers
 
+import com.nullit.core.StringProvider
 import com.nullit.features_chat.api.dto.DialogListDto
 import com.nullit.features_chat.ui.models.DialogModel
-import com.nullit.features_chat.utils.convertToPrettyDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class DialogMapper
 @Inject
 constructor(
-    // private stringProvider: StringProvider // from core
+    private val stringProvider: StringProvider
 ) {
 
     companion object {
@@ -66,7 +66,7 @@ constructor(
                 title = title,
                 lastMessage = lastMessage,
                 avatarUri = avatar,
-                timeOfLastMessage = dialogDto.lastUpdate.convertToPrettyDate()
+                timeOfLastMessage = stringProvider.convertToPrettyDate(dialogDto.lastUpdate)
             )
             dialogList.add(dialogModel)
         }

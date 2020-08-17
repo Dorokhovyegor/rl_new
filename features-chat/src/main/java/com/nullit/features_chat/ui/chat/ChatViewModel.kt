@@ -1,6 +1,8 @@
 package com.nullit.features_chat.ui.chat
 
 import androidx.lifecycle.*
+import com.nullit.core.StringProvider
+import com.nullit.features_chat.R
 import com.nullit.features_chat.chatservice.ChatSocketEvent
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
@@ -8,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * states for
+ * states for socket connection
  */
 const val SUCCESS_STATE = 0
 const val LOADING_STATE = 1
@@ -17,6 +19,7 @@ const val ERROR_STATE = 2
 class ChatViewModel
 @Inject
 constructor(
+    private val stringProvider: StringProvider,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
 
@@ -63,42 +66,42 @@ constructor(
         return when (socketEvent) {
             is ChatSocketEvent.SocketConnectEvent -> {
                 _loadingState.value = false
-                _snackBar.value = "Подключился"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_connect_success)
                 SUCCESS_STATE
             }
             is ChatSocketEvent.SocketConnectError -> {
                 _loadingState.value = false
-                _snackBar.value = "Ошибка подключения"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_error_connection)
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectAttempt -> {
                 _loadingState.value = true
-                _snackBar.value = "Попытка переподключения"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_attempt_reconnection)
                 LOADING_STATE
             }
             is ChatSocketEvent.SocketReconnectingEvent -> {
                 _loadingState.value = true
-                _snackBar.value = "Переподключение"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_reconnecting)
                 LOADING_STATE
             }
             is ChatSocketEvent.SocketReconnectError -> {
                 _loadingState.value = false
-                _snackBar.value = "Ошибка переподключения ${socketEvent.message}"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_error_reconnection)
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectFailed -> {
                 _loadingState.value = false
-                _snackBar.value = "Ошибка переподключение"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_failed_reconnection)
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectEvent -> {
                 _loadingState.value = false
-                _snackBar.value = "Переподключился"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_attempt_reconnection)
                 SUCCESS_STATE
             }
             is ChatSocketEvent.SocketConnectTimeOutEvent -> {
                 _loadingState.value = false
-                _snackBar.value = "Таймаут"
+                _snackBar.value = stringProvider.provideString(R.string.socket_events_timeout)
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketPingEvent -> {
