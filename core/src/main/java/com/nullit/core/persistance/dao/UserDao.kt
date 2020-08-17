@@ -10,13 +10,13 @@ interface UserDao {
     @Query("SELECT * From user_properties")
     suspend fun requestUserInfo(): UserProperties?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: UserProperties): Long
 
     @Update
     suspend fun updateUser(user: UserProperties): Int
 
-    @Delete
-    suspend fun deleteUser(user: UserProperties): Int
+    @Query("DELETE from user_properties")
+    suspend fun deleteUser(): Int
 
 }
