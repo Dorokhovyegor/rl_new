@@ -1,12 +1,11 @@
-package com.nullit.rtg.room.entity
+package com.nullit.core.persistance.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
-@Entity
-data class UserEntity(
+@Entity(tableName = "user_properties")
+data class UserProperties(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "user_id")
     val userId: Int,

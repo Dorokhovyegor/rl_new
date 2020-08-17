@@ -14,6 +14,7 @@ import com.nullit.features_chat.chatservice.EventServiceImpl
 import com.nullit.features_chat.mappers.DialogMapper
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -26,11 +27,13 @@ import javax.inject.Singleton
 @Module
 class ChatModule {
 
+    @Singleton
     @Provides
     fun provideEventService(): EventService {
         return EventServiceImpl()
     }
 
+    @Singleton
     @Provides
     fun provideGlideInstance(
         application: Application,
@@ -40,6 +43,7 @@ class ChatModule {
             .setDefaultRequestOptions(requestOptions)
     }
 
+    @Singleton
     @Provides
     fun provideRequestOptions(): RequestOptions {
         return RequestOptions
@@ -47,11 +51,13 @@ class ChatModule {
             .error(R.mipmap.image)
     }
 
+    @Singleton
     @Provides
     fun provideApiService(retrofitBuilder: Retrofit.Builder): ApiService {
         return retrofitBuilder.build().create(ApiService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideChatRepository(
         eventService: EventService,

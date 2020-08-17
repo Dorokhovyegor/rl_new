@@ -27,14 +27,21 @@ class LoginFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         subscribeObservers()
+    }
+
+    override fun onStart() {
+        super.onStart()
         Handler().postDelayed({
             motionLayout.transitionToEnd()
-        }, 100)
+        }, 70)
     }
 
     private fun initListeners() {
         loginButton.setOnClickListener {
-            viewModel.login(loginEditText.text.toString().trim(), passwordEditText.text.toString().trim())
+            viewModel.login(
+                loginEditText.text.toString().trim(),
+                passwordEditText.text.toString().trim()
+            )
         }
     }
 
@@ -52,7 +59,7 @@ class LoginFragment : BaseAuthFragment() {
         })
 
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { authenticated ->
-            // todo navigate to ...
+            findNavController().navigate(R.id.action_loginFragment_to_chatListFragment)
         })
     }
 }

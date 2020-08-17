@@ -4,12 +4,12 @@ import android.app.Application
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.nullit.core.persistance.AppDataBase
+import com.nullit.core.persistance.dao.DialogDao
+import com.nullit.core.persistance.dao.UserDao
 import com.nullit.rtg.api.ApiService
 import com.nullit.rtg.repository.auth.AuthRepository
 import com.nullit.rtg.repository.auth.AuthRepositoryImpl
-import com.nullit.rtg.room.AppDataBase
-import com.nullit.rtg.room.UserDao
-import com.nullit.rtg.ui.BaseApplication
 import com.nullit.rtg.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.logging.Level
 import javax.inject.Singleton
 
 
@@ -60,6 +59,12 @@ class AppModule {
     @Provides
     fun providerUserDao(appDataBase: AppDataBase): UserDao {
         return appDataBase.getUserDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDialogDao(appDataBase: AppDataBase): DialogDao {
+        return appDataBase.getDialogDao()
     }
 
     @Singleton

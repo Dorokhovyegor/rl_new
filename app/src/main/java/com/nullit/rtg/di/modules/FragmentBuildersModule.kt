@@ -1,5 +1,7 @@
 package com.nullit.rtg.di.modules
 
+import com.nullit.features_chat.ui.chat.ChatFragment
+import com.nullit.features_chat.ui.chatlist.ChatListFragment
 import com.nullit.rtg.ui.auth.LoginFragment
 import com.nullit.rtg.ui.auth.RegistrationFragment
 import dagger.Module
@@ -13,5 +15,11 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeRegistrationFragment(): RegistrationFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeChatFragment(): ChatFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeChatListFragment(): ChatListFragment
 
 }

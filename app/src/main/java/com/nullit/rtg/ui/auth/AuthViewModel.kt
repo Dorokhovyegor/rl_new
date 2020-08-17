@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nullit.core.persistance.entities.UserProperties
 import com.nullit.rtg.repository.auth.AuthRepository
-import com.nullit.rtg.room.entity.UserEntity
 import com.nullit.rtg.util.WrapperResponse
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class AuthViewModel
             when (response) {
                 is WrapperResponse.SuccessResponse -> {
                     val saveResult = authRepository.saveUserDataToDb(
-                        UserEntity(
+                        UserProperties(
                             response.body.user.userId,
                             response.body.user.login,
                             response.body.user.firstName,
@@ -75,6 +75,5 @@ class AuthViewModel
     fun onSnackBarShown() {
         _snackBar.value = null
     }
-
 
 }
