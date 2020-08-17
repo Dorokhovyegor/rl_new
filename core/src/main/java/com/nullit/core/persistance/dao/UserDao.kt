@@ -8,7 +8,7 @@ import com.nullit.core.persistance.entities.UserProperties
 interface UserDao {
 
     @Query("SELECT * From user_properties")
-    suspend fun requestUserInfo(): UserProperties
+    suspend fun requestUserInfo(): UserProperties?
 
     @Insert
     suspend fun insertUser(user: UserProperties): Long

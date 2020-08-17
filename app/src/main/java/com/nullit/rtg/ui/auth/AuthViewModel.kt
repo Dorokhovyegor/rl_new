@@ -71,6 +71,13 @@ class AuthViewModel
         }
     }
 
+    fun requestUserAuthStatus() {
+        viewModelScope.launch {
+            val result = authRepository.checkUserProperties()
+            _successLogin.value = result
+        }
+    }
+
     // показать сразу, как появился snackBar
     fun onSnackBarShown() {
         _snackBar.value = null

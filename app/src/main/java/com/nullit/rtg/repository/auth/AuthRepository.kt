@@ -13,4 +13,5 @@ interface AuthRepository {
 
     suspend fun attemptRegister(someData: String): WrapperResponse<JsonObject>
 
+    suspend fun checkUserProperties(): Boolean
 }

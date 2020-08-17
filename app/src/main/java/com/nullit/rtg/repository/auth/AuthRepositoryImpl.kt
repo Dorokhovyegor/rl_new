@@ -33,6 +33,12 @@ class AuthRepositoryImpl
         return WrapperResponse.create<JsonObject>(Throwable(""))
     }
 
+    override suspend fun checkUserProperties(): Boolean {
+        val userInfo = userDao.requestUserInfo()
+
+        return userInfo != null && userInfo.token.isNotEmpty()
+    }
+
     override suspend fun saveUserDataToDb(user: UserProperties): Long {
        return userDao.insertUser(user = user)
     }

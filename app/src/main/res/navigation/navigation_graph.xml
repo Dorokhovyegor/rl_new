@@ -2,19 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/loginFragment">
-
+    app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.nullit.rtg.ui.auth.LoginFragment"
         android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_chatListFragment"
-            app:destination="@id/chatListFragment"
-            app:enterAnim="@anim/slide_in_down"
-            app:exitAnim="@anim/slide_out_top"
-            app:popEnterAnim="@anim/slide_in_top"
-            app:popExitAnim="@anim/slide_out_down" />
+            app:destination="@id/chatListFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatListFragment"
@@ -31,13 +26,16 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.nullit.rtg.ui.auth.SplashFragment"
-        android:label="SplashFragment" >
+        android:label="SplashFragment">
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_chatListFragment"
-            app:destination="@id/chatListFragment" />
+            app:destination="@id/chatListFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
-
 </navigation>
