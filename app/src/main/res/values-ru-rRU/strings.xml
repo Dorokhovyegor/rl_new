@@ -2,8 +2,12 @@
 <resources>
     <string name="app_name">Royal Transport Group</string>
 
-    <!--логин-->
+    <!--экран логин-->
     <string name="edit_text_hint_login">Логин</string>
     <string name="edit_text_hint_password">Пароль</string>
     <string name="button_text_login">Войти</string>
+    <string name="login_message_success_login">Успешный вход</string>
+    <string name="login_message_success_registration">Успешная регистрация</string>
+    <string name="login_message_failed_login">Не удалось войти</string>
+    <string name="login_message_failed_registration">Не удалось зарегестрироваться</string>
 </resources>

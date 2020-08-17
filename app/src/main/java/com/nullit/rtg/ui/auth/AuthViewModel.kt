@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nullit.core.StringProvider
 import com.nullit.core.persistance.entities.UserProperties
+import com.nullit.rtg.R
 import com.nullit.rtg.repository.auth.AuthRepository
 import com.nullit.rtg.util.WrapperResponse
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 class AuthViewModel
 @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _snackBar = MutableLiveData<String?>()
@@ -35,9 +38,7 @@ class AuthViewModel
         }
         _progressBar.value = true
         viewModelScope.launch {
-            val response = authRepository.attemptLogin(login, password)
-            _progressBar.value = false
-            when (response) {
+            when (val response = authRepository.attemptLogin(login, password)) {
                 is WrapperResponse.SuccessResponse -> {
                     val saveResult = authRepository.saveUserDataToDb(
                         UserProperties(
@@ -52,22 +53,20 @@ class AuthViewModel
                         )
                     )
                     if (saveResult >= 0) {
-                        _snackBar.value = "Login success" // todo localized msg
+                        _snackBar.value = stringProvider.provideString(R.string.login_message_success_login)
                         _successLogin.value = true
                     } else {
-                        _snackBar.value = "Can't insert to db" // todo localized msg
+                        _snackBar.value = stringProvider.provideString(R.string.login_message_failed_login)
                     }
-                    _progressBar.value = false
                 }
                 is WrapperResponse.GenericError<*> -> {
                     _snackBar.value = response.errorMessage
-                    _progressBar.value = false
                 }
                 is WrapperResponse.NetworkError -> {
                     _snackBar.value = response.errorResponse?.message
-                    _progressBar.value = false
                 }
             }
+            _progressBar.value = false
         }
     }
 
