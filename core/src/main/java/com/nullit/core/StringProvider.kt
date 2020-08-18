@@ -31,9 +31,11 @@ constructor(private val application: Application) {
 
 
     fun convertToPrettyDate(inputString: String): String {
+        var newString = inputString.substringBefore(".", inputString)
+        newString = newString.replace("T", " ")
         val sdf = SimpleDateFormat(SERVER_DATE_PATTERN, Locale.ENGLISH)
         sdf.timeZone = TimeZone.getTimeZone("UTC")
-        val date = sdf.parse(inputString)
+        val date = sdf.parse(newString)
         val messageTime: Long = date.time
         val currentTime = System.currentTimeMillis()
         val delta = currentTime - messageTime
@@ -60,7 +62,7 @@ constructor(private val application: Application) {
             }
             else -> {
                 // just date
-                inputString.split(" ")[0]
+                newString.split(" ")[0]
             }
         }
     }

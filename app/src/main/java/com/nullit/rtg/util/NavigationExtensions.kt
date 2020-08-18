@@ -20,7 +20,7 @@ fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,
     containerId: Int,
-    intent: Intent
+    intent: Intent?
 ): LiveData<NavController> {
 
     // Map of tags
@@ -119,7 +119,7 @@ fun BottomNavigationView.setupWithNavController(
     setupItemReselected(graphIdToTagMap, fragmentManager)
 
     // Handle deep link
-    setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
+    //setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
@@ -138,6 +138,7 @@ fun BottomNavigationView.setupWithNavController(
     return selectedNavController
 }
 
+// обработка дип линков
 private fun BottomNavigationView.setupDeepLinks(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,
@@ -161,6 +162,7 @@ private fun BottomNavigationView.setupDeepLinks(
         }
     }
 }
+
 
 private fun BottomNavigationView.setupItemReselected(
     graphIdToTagMap: SparseArray<String>,
@@ -200,7 +202,6 @@ private fun attachNavHostFragment(
             }
         }
         .commitNow()
-
 }
 
 private fun obtainNavHostFragment(
