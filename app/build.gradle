@@ -48,6 +48,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':features-chat')
+    implementation project(':features-profile')
     implementation project(':core')
 
     def constraint_layout_version = "2.0.0-rc1"

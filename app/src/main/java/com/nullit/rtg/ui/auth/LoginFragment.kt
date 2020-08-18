@@ -1,7 +1,6 @@
 package com.nullit.rtg.ui.auth
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,9 +30,7 @@ class LoginFragment : BaseAuthFragment() {
 
     override fun onStart() {
         super.onStart()
-        Handler().postDelayed({
-            motionLayout.transitionToEnd()
-        }, 70)
+        motionLayout.transitionToEnd()
     }
 
     private fun initListeners() {

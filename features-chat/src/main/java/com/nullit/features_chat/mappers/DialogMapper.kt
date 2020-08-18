@@ -53,13 +53,13 @@ constructor(
                 DIALOG_PERSONAL -> {
                     if (dialogDto.userList.isNotEmpty()) {
                         dialogDto.userList[0].avatar
-                            ?: "android.resource://com.nullit.feature_chat/drawable/ic_personal_chat_default_avatar"
+                            ?: "android.resource://com.nullit.feature_chat/drawable/ic_default_avatar"
                     } else {
-                        "android.resource://com.nullit.feature_chat/drawable/ic_personal_chat_default_avatar"
+                        "android.resource://com.nullit.feature_chat/drawable/ic_default_avatar"
                     }
                 }
                 DIALOG_GROUP -> "android.resource://com.nullit.feature_chat/drawable/ic_group_chat_default_avatar"
-                else -> "android.resource://com.nullit.feature_chat/drawable/ic_personal_chat_default_avatar"
+                else -> "android.resource://com.nullit.feature_chat/drawable/ic_default_avatar"
             }
             val dialogModel = DialogModel(
                 dialogId = dialogDto.dialogId,

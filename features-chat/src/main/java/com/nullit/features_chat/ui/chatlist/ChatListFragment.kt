@@ -103,7 +103,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
     }
 
     override fun onDialogClick(position: Int, dialog: DialogModel) {
-        //findNavController().navigate(R.id.action_chatListFragment_to_chatFragment, bundleOf("chatId" to dialog.dialogId))
+        findNavController().navigate(R.id.action_chatListFragment_to_chatFragment, bundleOf("chatId" to dialog.dialogId))
     }
 
     companion object {

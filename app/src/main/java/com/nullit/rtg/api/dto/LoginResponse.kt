@@ -7,18 +7,21 @@ import com.google.gson.annotations.SerializedName
 import com.nullit.rtg.api.GenericResponse
 
 data class LoginResponse(
+    @SerializedName("data") val loginData: LoginData
+) : GenericResponse()
+
+data class LoginData(
     @SerializedName("token_type") val tokenType: String,
     @SerializedName("token") val token: String,
     @SerializedName("expires_at") val expiresDate: String,
     @SerializedName("user") val user: User
-) : GenericResponse()
+)
 
 @Entity
 data class User(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "user_id")
-    @SerializedName("id")
-    val userId: Int,
+    @SerializedName("id") val userId: Int,
     @ColumnInfo(name = "login")
     @SerializedName("login") val login: String,
     @ColumnInfo(name = "firstname")

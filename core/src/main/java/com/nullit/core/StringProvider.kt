@@ -26,7 +26,7 @@ constructor(private val application: Application) {
     }
 
     fun providePluralString(@PluralsRes resource: Int, vararg params: Int): String {
-        return application.getString(resource, params[0], params[1])
+        return application.resources.getQuantityString(resource, params[0], params[1])
     }
 
 

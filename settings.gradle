@@ -1,3 +1,4 @@
+include ':features-profile'
 include ':core'
 include ':features-chat'
 include ':app'

@@ -1,5 +1,6 @@
 package com.nullit.rtg.ui.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nullit.core.StringProvider
 import com.nullit.core.persistance.entities.UserProperties
 import com.nullit.rtg.R
+import com.nullit.rtg.mappers.UserMapper
 import com.nullit.rtg.repository.auth.AuthRepository
 import com.nullit.rtg.util.WrapperResponse
 import kotlinx.coroutines.launch
@@ -15,12 +17,13 @@ import javax.inject.Inject
 class AuthViewModel
 @Inject constructor(
     private val authRepository: AuthRepository,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val userMapper: UserMapper
 ) : ViewModel() {
 
     private val _snackBar = MutableLiveData<String?>()
     private val _progressBar = MutableLiveData<Boolean>(false)
-    private val _successLogin = MutableLiveData<Boolean>(false)
+    private val _successLogin = MutableLiveData<Boolean>()
 
     val successLogin: LiveData<Boolean>
         get() = _successLogin
@@ -40,23 +43,15 @@ class AuthViewModel
         viewModelScope.launch {
             when (val response = authRepository.attemptLogin(login, password)) {
                 is WrapperResponse.SuccessResponse -> {
-                    val saveResult = authRepository.saveUserDataToDb(
-                        UserProperties(
-                            response.body.user.userId,
-                            response.body.user.login,
-                            response.body.user.firstName,
-                            response.body.user.lastName,
-                            response.body.user.email,
-                            response.body.user.avatar,
-                            response.body.tokenType,
-                            response.body.token
-                        )
-                    )
+                    val preparedUserProperties = userMapper.fromLoginResponseToUserProperties(response.body)
+                    val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)
                     if (saveResult >= 0) {
-                        _snackBar.value = stringProvider.provideString(R.string.login_message_success_login)
+                        _snackBar.value =
+                            stringProvider.provideString(R.string.login_message_success_login)
                         _successLogin.value = true
                     } else {
-                        _snackBar.value = stringProvider.provideString(R.string.login_message_failed_login)
+                        _snackBar.value =
+                            stringProvider.provideString(R.string.login_message_failed_login)
                     }
                 }
                 is WrapperResponse.GenericError<*> -> {

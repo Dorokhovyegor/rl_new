@@ -4,24 +4,17 @@ import android.app.Application
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.nullit.core.persistance.dao.UserDao
 import com.nullit.features_chat.R
 import com.nullit.features_chat.api.ApiService
-import com.nullit.features_chat.utils.Constants
 import com.nullit.features_chat.chatservice.EventService
 import com.nullit.features_chat.chatservice.EventServiceImpl
 import com.nullit.features_chat.mappers.DialogMapper
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -62,9 +55,10 @@ class ChatModule {
     fun provideChatRepository(
         eventService: EventService,
         apiService: ApiService,
-        dialogMapper: DialogMapper
+        dialogMapper: DialogMapper,
+        userDao: UserDao
     ): ChatRepository {
-        return ChatRepositoryImpl(eventService, apiService, dialogMapper)
+        return ChatRepositoryImpl(eventService, apiService, dialogMapper, userDao)
     }
 
 }

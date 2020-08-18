@@ -10,4 +10,7 @@
     <string name="login_message_success_registration">Успешная регистрация</string>
     <string name="login_message_failed_login">Не удалось войти</string>
     <string name="login_message_failed_registration">Не удалось зарегестрироваться</string>
+
+    <!--другие-->
+    <string name="undefined_text">undefined</string>
 </resources>

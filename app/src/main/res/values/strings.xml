@@ -10,4 +10,7 @@
     <string name="login_message_failed_login">Registration failed</string>
     <string name="login_message_failed_registration">Login failed</string>
 
+    <!--другие-->
+    <string name="undefined_text">undefined</string>
+
 </resources>

@@ -3,46 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#C9FFA8"
     android:layout_height="match_parent"
+    android:background="#C9FFA8"
     tools:context=".ui.chat.ChatFragment">
 
     <TextView
         android:id="@+id/stateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text=""
         android:textColor="#000"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text=""
-        android:layout_width="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/msgRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/editTextLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextLayout"
         android:layout_width="match_parent"
-        app:endIconMode="custom"
-        app:endIconTint="#000"
+        android:layout_height="wrap_content"
         android:background="#fff"
         app:endIconDrawable="@drawable/ic_send_message"
-        android:layout_height="wrap_content"
+        app:endIconMode="custom"
+        app:endIconTint="#000"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:lines="1"
-            android:textColor="#fff"
-            android:layout_height="match_parent" />
+            android:textColor="#fff" />
 
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
