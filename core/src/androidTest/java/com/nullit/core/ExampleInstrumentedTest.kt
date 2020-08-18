@@ -44,13 +44,13 @@ class DatabaseTest {
         assert(userInformation == null)
         val userProperties = UserProperties(
             1,
-            "dalsd",
-            "dsmak",
-            "daskd",
-            "ksfsl",
-            "sdfkl",
+            "login",
+            "first_name",
+            "last_name",
+            "email",
+            "avatar",
             "Bearer",
-            "idsfosdjknkldfnlvdnxjfkvndv"
+            "token-token-token"
         )
         val result = userDao.insertUser(userProperties)
         assert(result == 0.toLong())
