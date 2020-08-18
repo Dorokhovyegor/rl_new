@@ -31,9 +31,9 @@ class SplashFragment : BaseAuthFragment() {
 
     private fun subscribeObservers() {
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { isAuthenticated ->
-            Log.e("SplashFragment", "${isAuthenticated}")
+            mainViewModel.setAuthenticatedStatus(isAuthenticated)
             if (isAuthenticated) {
-                findNavController().navigate(R.id.action_splashFragment_to_chatListFragment)
+                findNavController().navigate(R.id.action_splashFragment_to_chat_navigation_graph)
             } else {
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
             }

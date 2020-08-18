@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/profile_navigation_graph"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.nullit.features_profile.ui.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileInfoFragment"
+            app:destination="@id/editProfileInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileInfoFragment"
+        android:name="com.nullit.features_profile.ui.EditProfileInfoFragment"
+        android:label="EditProfileInfoFragment" />
+</navigation>
