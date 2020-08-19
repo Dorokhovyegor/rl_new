@@ -3,10 +3,10 @@ package com.nullit.rtg.repository.auth
 import com.google.gson.JsonObject
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.core.persistance.entities.UserProperties
+import com.nullit.core.repo.JobManager
 import com.nullit.rtg.api.ApiService
 import com.nullit.rtg.api.dto.LoginResponse
-import com.nullit.rtg.repository.JobManager
-import com.nullit.rtg.util.WrapperResponse
+import com.nullit.core.repo.WrapperResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

@@ -35,7 +35,7 @@ constructor() : ChatEventService {
                 socket.connect()
                 subscribeOnDefaultEvents()
                 socket.emit("subscribe", JSONObject().apply {
-                    put("channel", "private-chat-1")
+                    put("channel", "private-chat-${chatId}")
                     put("auth", JSONObject().apply {
                         put("headers", JSONObject().apply {
                             put("Authorization", token)

@@ -48,6 +48,9 @@ class ChatFragment : BaseChatFragment() {
         toolBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+        editTextLayout.setEndIconOnClickListener {
+            chatId?.let { it1 -> chatViewModel.sendMessage(editText.text.toString(), it1) }
+        }
         connect(chatId!!)
         subscribeObserver()
     }

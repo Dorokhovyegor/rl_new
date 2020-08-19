@@ -3,7 +3,7 @@ package com.nullit.rtg.repository.auth
 import com.google.gson.JsonObject
 import com.nullit.core.persistance.entities.UserProperties
 import com.nullit.rtg.api.dto.LoginResponse
-import com.nullit.rtg.util.WrapperResponse
+import com.nullit.core.repo.WrapperResponse
 
 interface AuthRepository {
 

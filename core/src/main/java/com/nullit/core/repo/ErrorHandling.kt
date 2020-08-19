@@ -1,4 +1,4 @@
-package com.nullit.rtg.util
+package com.nullit.core.repo
 
 import android.util.Log
 import org.json.JSONException

@@ -1,4 +1,4 @@
-package com.nullit.rtg.ui.state
+package com.nullit.core.repo
 
 data class Message(val message: String?, val messageType: MessageType)
 sealed class MessageType{

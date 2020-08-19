@@ -1,16 +1,11 @@
-package com.nullit.rtg.repository
+package com.nullit.core.repo
 
-import com.nullit.rtg.ui.state.Message
-import com.nullit.rtg.ui.state.MessageType
-import com.nullit.rtg.util.ErrorHandling
-import com.nullit.rtg.util.WrapperResponse
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
-open class JobManager() {
+open class JobManager {
 
     suspend fun <T> safeApiCall(
         dispatcher: CoroutineDispatcher,

@@ -1,7 +1,5 @@
-package com.nullit.rtg.util
+package com.nullit.core.repo
 
-import com.nullit.rtg.ui.state.Message
-import com.nullit.rtg.ui.state.MessageType
 import retrofit2.Response
 
 sealed class WrapperResponse<out T> {
