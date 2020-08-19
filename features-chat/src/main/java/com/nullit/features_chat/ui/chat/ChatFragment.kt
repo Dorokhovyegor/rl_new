@@ -45,6 +45,9 @@ class ChatFragment : BaseChatFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
+        toolBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
         connect(chatId!!)
         subscribeObserver()
     }
@@ -52,9 +55,9 @@ class ChatFragment : BaseChatFragment() {
     private fun subscribeObserver() {
         chatViewModel.socketConnectionState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
-                SUCCESS_STATE -> stateTextView.text = "Подключено"
-                ERROR_STATE -> stateTextView.text = "Ошибка"
-                LOADING_STATE -> stateTextView.text = "Подключение..."
+                SUCCESS_STATE -> toolBar.title = "Чат"
+                ERROR_STATE -> toolBar.title = "Ошибка"
+                LOADING_STATE -> toolBar.title = "Подключение..."
             }
         })
 
@@ -63,9 +66,9 @@ class ChatFragment : BaseChatFragment() {
         })
 
         chatViewModel.snackBar.observe(viewLifecycleOwner, Observer { snackBarMessage ->
-            view?.let {
+           /* view?.let {
                 Snackbar.make(it, snackBarMessage, Snackbar.LENGTH_LONG).show()
-            }
+            }*/
         })
     }
 

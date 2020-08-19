@@ -93,7 +93,6 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
                     if (lastPosition == recyclerAdapter.itemCount.minus(1)) {
-                        Log.e("ChatListFragment", "request")
                         chatListViewModel.requestDialogListOnPage(recyclerAdapter.itemCount)
                     }
                 }

@@ -2,8 +2,12 @@ package com.nullit.rtg.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.nullit.rtg.R
 import com.nullit.rtg.ui.common.BaseActivity
 import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
@@ -16,7 +20,7 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
     lateinit var mainViewModel: MainViewModel
-
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +28,7 @@ class MainActivity : BaseActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        subscribeObserver()
-
-        if (savedInstanceState == null) {
-            setupBottomNavigation()
-        }
+        subscribeObserver(savedInstanceState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -42,17 +42,36 @@ class MainActivity : BaseActivity() {
         val controller = bottom_nav.setupWithNavController(
             graphs,
             supportFragmentManager,
-            R.id.nav_host_fragment,
-            null
+            R.id.main_host_fragment
         )
         controller.observe(this, Observer { navController ->
-            // нафига ?
+            setupActionBarWithNavController(navController)
+        })
+        currentNavController = controller
+    }
+
+    private fun subscribeObserver(savedInstanceState: Bundle?) {
+        mainViewModel.authenticated.observe(this, Observer { authenticated ->
+            if (authenticated) {
+                changeToMain()
+            } else {
+                changeToAuth()
+            }
+            if (savedInstanceState == null) {
+                setupBottomNavigation()
+            }
         })
     }
 
-    private fun subscribeObserver() {
-        mainViewModel.authenticated.observe(this, Observer { authenticated ->
-            bottom_nav.visibility = if (authenticated) View.VISIBLE else View.GONE
-        })
+    private fun changeToAuth() {
+        bottom_nav.visibility = View.GONE
+    }
+
+    private fun changeToMain() {
+        auth_host_fragment.visibility = View.GONE
+        val authFragmentView = rootView.findViewById<FragmentContainerView>(R.id.auth_host_fragment)
+        rootView.removeView(authFragmentView)
+        navHosViewStub.inflate()
+        bottom_nav.visibility = View.VISIBLE
     }
 }

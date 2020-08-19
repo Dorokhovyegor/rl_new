@@ -7,11 +7,6 @@
         android:id="@+id/loginFragment"
         android:name="com.nullit.rtg.ui.auth.LoginFragment"
         android:label="LoginFragment">
-        <action
-            android:id="@+id/action_loginFragment_to_chat_navigation_graph"
-            app:destination="@id/chat_navigation_graph"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -22,12 +17,5 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_splashFragment_to_chat_navigation_graph"
-            app:destination="@id/chat_navigation_graph"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
     </fragment>
-    <include app:graph="@navigation/profile_navigation_graph" />
-    <include app:graph="@navigation/chat_navigation_graph" />
 </navigation>

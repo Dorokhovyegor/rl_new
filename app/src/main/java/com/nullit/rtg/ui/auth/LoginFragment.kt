@@ -57,9 +57,6 @@ class LoginFragment : BaseAuthFragment() {
 
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { authenticated ->
             mainViewModel.setAuthenticatedStatus(authenticated)
-            if (authenticated) {
-                findNavController().navigate(R.id.action_loginFragment_to_chat_navigation_graph)
-            }
         })
     }
 }

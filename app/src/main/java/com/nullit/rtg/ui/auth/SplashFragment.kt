@@ -2,7 +2,6 @@ package com.nullit.rtg.ui.auth
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +31,7 @@ class SplashFragment : BaseAuthFragment() {
     private fun subscribeObservers() {
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { isAuthenticated ->
             mainViewModel.setAuthenticatedStatus(isAuthenticated)
-            if (isAuthenticated) {
-                findNavController().navigate(R.id.action_splashFragment_to_chat_navigation_graph)
-            } else {
+            if (!isAuthenticated) {
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
             }
         })
