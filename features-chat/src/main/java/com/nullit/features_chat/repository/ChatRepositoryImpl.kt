@@ -54,17 +54,30 @@ constructor(
         eventService.disconnect()
     }
 
-    override suspend fun requestDialogListByPage(page: Int): List<DialogModel> {
+    override suspend fun requestDialogListByPage(page: Int): WrapperResponse<List<DialogModel>> {
         val userProperties = userDao.requestUserInfo()
         val token = userProperties?.token?.generateBearerToken() ?: ""
-        val result = apiService.requestDialogListByPage(
-            token = token,
-            qty = DIALOGS_PER_PAGE,
-            page = page
-        )
-        // todo save result to db
-        return withContext(Dispatchers.Default) {
-            dialogMapper.fromDialogListDtoToListDialogModel(result)
+        val wrapperResponse = safeApiCall(dispatcher) {
+            apiService.requestDialogListByPage(
+                token = token,
+                qty = DIALOGS_PER_PAGE,
+                page = page
+            )
+        }
+
+        return when (wrapperResponse) {
+            is WrapperResponse.SuccessResponse -> {
+                val mappedResult = withContext(Dispatchers.Default) {
+                    dialogMapper.fromDialogListDtoToListDialogModel(wrapperResponse.body)
+                }
+                WrapperResponse.SuccessResponse(mappedResult)
+            }
+            is WrapperResponse.NetworkError -> {
+                wrapperResponse as WrapperResponse.NetworkError<List<DialogModel>>
+            }
+            is WrapperResponse.GenericError<*> -> {
+                wrapperResponse as WrapperResponse.GenericError<List<DialogModel>>
+            }
         }
     }
 

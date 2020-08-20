@@ -15,18 +15,17 @@ sealed class WrapperResponse<out T> {
         }
 
         fun <T> create(response: Response<T>): WrapperResponse<T> {
-
             if (response.isSuccessful) {
                 val body = response.body()
                 return if (body == null || response.code() == 204) {
                     return NetworkError(
                         response.code(),
-                        Message(null, MessageType.None)
+                        null
                     )
                 } else if (response.code() == 401) {
                     NetworkError(
                         401,
-                        Message("unauthorized", MessageType.Dialog)
+                        "unauthorized"
                     )
                 } else {
                     SuccessResponse(body = body)
@@ -46,6 +45,6 @@ sealed class WrapperResponse<out T> {
     }
 
     data class SuccessResponse<T>(val body: T) : WrapperResponse<T>()
-    data class NetworkError<T>(val code: Int?, val errorResponse: Message?) : WrapperResponse<T>()
-    data class GenericError<T>(val errorMessage: String) : WrapperResponse<Nothing>()
+    data class NetworkError<T>(val code: Int?, val errorMessage: String?) : WrapperResponse<T>()
+    data class GenericError<T>(val errorMessage: String?) : WrapperResponse<T>()
 }

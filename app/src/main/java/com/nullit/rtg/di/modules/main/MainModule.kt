@@ -1,4 +1,4 @@
-package com.nullit.features_chat.di.modules
+package com.nullit.rtg.di.modules.main
 
 import android.app.Application
 import com.bumptech.glide.Glide
@@ -12,21 +12,21 @@ import com.nullit.features_chat.chatservice.EventServiceImpl
 import com.nullit.features_chat.mappers.DialogMapper
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
+import com.nullit.rtg.di.scopes.MainScope
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
-class ChatModule {
+class MainModule {
 
-    @Singleton
+    @MainScope
     @Provides
     fun provideEventService(): EventService {
         return EventServiceImpl()
     }
 
-    @Singleton
+    @MainScope
     @Provides
     fun provideGlideInstance(
         application: Application,
@@ -36,7 +36,7 @@ class ChatModule {
             .setDefaultRequestOptions(requestOptions)
     }
 
-    @Singleton
+    @MainScope
     @Provides
     fun provideRequestOptions(): RequestOptions {
         return RequestOptions
@@ -44,13 +44,13 @@ class ChatModule {
             .error(R.mipmap.image)
     }
 
-    @Singleton
+    @MainScope
     @Provides
     fun provideApiService(retrofitBuilder: Retrofit.Builder): ApiService {
         return retrofitBuilder.build().create(ApiService::class.java)
     }
 
-    @Singleton
+    @MainScope
     @Provides
     fun provideChatRepository(
         eventService: EventService,
@@ -60,5 +60,4 @@ class ChatModule {
     ): ChatRepository {
         return ChatRepositoryImpl(eventService, apiService, dialogMapper, userDao)
     }
-
 }

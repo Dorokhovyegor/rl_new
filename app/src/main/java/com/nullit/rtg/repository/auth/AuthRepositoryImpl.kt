@@ -35,7 +35,6 @@ class AuthRepositoryImpl
 
     override suspend fun checkUserProperties(): Boolean {
         val userInfo = userDao.requestUserInfo()
-
         return userInfo != null && userInfo.token.isNotEmpty()
     }
 

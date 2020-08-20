@@ -9,6 +9,7 @@ import com.nullit.rtg.R
 import com.nullit.rtg.mappers.UserMapper
 import com.nullit.rtg.repository.auth.AuthRepository
 import com.nullit.core.repo.WrapperResponse
+import com.nullit.core.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,49 +18,39 @@ class AuthViewModel
     private val authRepository: AuthRepository,
     private val stringProvider: StringProvider,
     private val userMapper: UserMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val _snackBar = MutableLiveData<String?>()
-    private val _progressBar = MutableLiveData<Boolean>(false)
     private val _successLogin = MutableLiveData<Boolean>()
 
     val successLogin: LiveData<Boolean>
         get() = _successLogin
-
-    val snackbar: LiveData<String?>
-        get() = _snackBar
-
-    val progressBar: LiveData<Boolean>
-        get() = _progressBar
 
     fun login(login: String, password: String) {
         if (login.isBlank() || password.isBlank()) {
             _snackBar.value = "Заполните пустые поля"
             return
         }
-        _progressBar.value = true
-        viewModelScope.launch {
-            when (val response = authRepository.attemptLogin(login, password)) {
-                is WrapperResponse.SuccessResponse -> {
-                    val preparedUserProperties = userMapper.fromLoginResponseToUserProperties(response.body)
-                    val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)
-                    if (saveResult >= 0) {
-                        _snackBar.value =
-                            stringProvider.provideString(R.string.login_message_success_login)
-                        _successLogin.value = true
-                    } else {
-                        _snackBar.value =
-                            stringProvider.provideString(R.string.login_message_failed_login)
-                    }
+        _loading.value = true
+        val job = viewModelScope.launch {
+            val response = authRepository.attemptLogin(login, password)
+            if (response is WrapperResponse.SuccessResponse){
+                val preparedUserProperties =
+                    userMapper.fromLoginResponseToUserProperties(response.body)
+                val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)
+                if (saveResult >= 0) {
+                    _snackBar.value =
+                        stringProvider.provideString(R.string.login_message_success_login)
+                    _successLogin.value = true
+                } else {
+                    _snackBar.value =
+                        stringProvider.provideString(R.string.login_message_failed_login)
                 }
-                is WrapperResponse.GenericError<*> -> {
-                    _snackBar.value = response.errorMessage
-                }
-                is WrapperResponse.NetworkError -> {
-                    _snackBar.value = response.errorResponse?.message
-                }
+            } else {
+                handleErrorResponse(response)
             }
-            _progressBar.value = false
+        }
+        job.invokeOnCompletion {
+            _loading.value = false
         }
     }
 
@@ -69,10 +60,4 @@ class AuthViewModel
             _successLogin.value = result
         }
     }
-
-    // показать сразу, как появился snackBar
-    fun onSnackBarShown() {
-        _snackBar.value = null
-    }
-
 }

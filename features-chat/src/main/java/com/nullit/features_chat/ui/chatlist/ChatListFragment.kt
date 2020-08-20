@@ -1,7 +1,6 @@
 package com.nullit.features_chat.ui.chatlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
 
     @Inject
     lateinit var requestManager: RequestManager
+
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     lateinit var chatListViewModel: ChatListViewModel
@@ -69,14 +69,22 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
             }
         })
 
-        chatListViewModel.snackBar.observe(viewLifecycleOwner, Observer {snackBarMessage ->
+        chatListViewModel.snackbar.observe(viewLifecycleOwner, Observer { snackBarMessage ->
             view?.let {
-                Snackbar.make(it, snackBarMessage, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(it, snackBarMessage.toString(), Snackbar.LENGTH_LONG).show()
             }
         })
 
-        chatListViewModel.loading.observe(viewLifecycleOwner, Observer {loading ->
+        chatListViewModel.progressBar.observe(viewLifecycleOwner, Observer { loading ->
             progressCircular.visibility = if (loading) View.VISIBLE else View.GONE
+        })
+    }
+
+    override fun observeSessionState() {
+        chatListViewModel.endSession.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                navigateToAuthActivity()
+            }
         })
     }
 
@@ -87,7 +95,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
                 requestManager,
                 this@ChatListFragment
             )
-            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -102,7 +110,10 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
     }
 
     override fun onDialogClick(position: Int, dialog: DialogModel) {
-        findNavController().navigate(R.id.action_chatListFragment_to_chatFragment, bundleOf("chatId" to dialog.dialogId))
+        findNavController().navigate(
+            R.id.action_chatListFragment_to_chatFragment,
+            bundleOf("chatId" to dialog.dialogId)
+        )
     }
 
     companion object {

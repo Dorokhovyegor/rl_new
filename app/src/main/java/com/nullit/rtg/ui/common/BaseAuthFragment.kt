@@ -15,16 +15,11 @@ abstract class BaseAuthFragment : DaggerFragment() {
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
     lateinit var viewModel: AuthViewModel
-    lateinit var mainViewModel: MainViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = activity?.run {
             ViewModelProvider(this, providerFactory)[AuthViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
-        mainViewModel = activity?.run {
-            ViewModelProvider(this, providerFactory)[MainViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
-        Log.e("MainActivity", "${mainViewModel}")
     }
 }

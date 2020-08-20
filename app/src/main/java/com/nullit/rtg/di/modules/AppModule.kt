@@ -69,22 +69,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOpenApiService(retrofitBuilder: Retrofit.Builder): ApiService {
-        return retrofitBuilder.build().create(ApiService::class.java)
-    }
-
-    @Provides
     fun providerDispatchers(): CoroutineDispatcher {
         return Dispatchers.IO
-    }
-
-    @Singleton
-    @Provides
-    fun provideAuthRepository(
-        apiService: ApiService,
-        userDao: UserDao
-    ): AuthRepository {
-        return AuthRepositoryImpl(apiService = apiService, userDao = userDao)
     }
 
 }

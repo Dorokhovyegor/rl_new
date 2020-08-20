@@ -95,7 +95,7 @@ constructor() : ChatEventService {
     }
 
     override fun subscribeOnReconnectError() {
-        socket.on(Socket.EVENT_RECONNECT) {
+        socket.on(Socket.EVENT_RECONNECT_ERROR) {
             _socketEvent.postValue(ChatSocketEvent.SocketReconnectError("reconnect error ${it?.get(0)}"))
         }
     }

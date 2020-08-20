@@ -1,19 +1,29 @@
 package com.nullit.features_chat.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
-import com.nullit.features_chat.ui.chat.ChatViewModel
-import com.nullit.features_chat.utils.ViewModelProviderFactory
+import com.nullit.core.exceptions.UnsupportedActivityException
+import com.nullit.core.ui.EndSessionListener
 import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 val ARG_CHAT = "chatId"
 
 abstract class BaseChatFragment : DaggerFragment() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private var endSessionListener: EndSessionListener? = null
 
+    abstract protected fun observeSessionState()
+
+    protected fun navigateToAuthActivity() {
+        endSessionListener?.logOut()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is EndSessionListener) {
+            endSessionListener = context
+        } else throw UnsupportedActivityException("You need to use Activity, which implementing EndSessionListener")
     }
 }

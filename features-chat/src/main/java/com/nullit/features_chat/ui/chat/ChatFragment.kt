@@ -64,14 +64,23 @@ class ChatFragment : BaseChatFragment() {
             }
         })
 
-        chatViewModel.loading.observe(viewLifecycleOwner, Observer { loading ->
+        chatViewModel.progressBar.observe(viewLifecycleOwner, Observer { loading ->
             progressCircular.visibility = if (loading) View.VISIBLE else View.GONE
         })
 
-        chatViewModel.snackBar.observe(viewLifecycleOwner, Observer { snackBarMessage ->
-           /* view?.let {
-                Snackbar.make(it, snackBarMessage, Snackbar.LENGTH_LONG).show()
-            }*/
+        chatViewModel.snackbar.observe(viewLifecycleOwner, Observer { snackBarMessage ->
+            view?.let {
+                Snackbar.make(it, snackBarMessage.toString(), Snackbar.LENGTH_LONG).show()
+            }
+            chatViewModel.onSnackBarShown()
+        })
+    }
+
+    override fun observeSessionState() {
+        chatViewModel.endSession.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                navigateToAuthActivity()
+            }
         })
     }
 

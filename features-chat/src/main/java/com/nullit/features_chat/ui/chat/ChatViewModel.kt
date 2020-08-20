@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.nullit.core.StringProvider
 import com.nullit.core.repo.WrapperResponse
+import com.nullit.core.ui.viewmodel.BaseViewModel
 import com.nullit.features_chat.chatservice.ChatSocketEvent
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
@@ -22,19 +23,12 @@ class ChatViewModel
 constructor(
     private val stringProvider: StringProvider,
     private val chatRepository: ChatRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     val socketConnectionState: LiveData<Int> =
         Transformations.map((chatRepository as ChatRepositoryImpl).connectionState) {
             handleSocketChatEvent(it)
         }
-
-    private val _loadingState = MutableLiveData<Boolean>(false)
-    val loading: LiveData<Boolean>
-        get() = _loadingState
-    private val _snackBar = MutableLiveData<String>()
-    val snackBar: LiveData<String>
-        get() = _snackBar
 
     fun connect(chatId: Int?) {
         viewModelScope.launch {
@@ -53,7 +47,7 @@ constructor(
     fun sendMessage(message: String, chatId: Int) {
         Log.e("ChatViewModel", "call method $message, $chatId")
         val sendMessageJob = viewModelScope.launch {
-            _loadingState.value = true
+            _loading.value = true
             if (message.trim().isEmpty()) {
                 _snackBar.value = "Введите текст"
             } else {
@@ -64,7 +58,7 @@ constructor(
             }
         }
         sendMessageJob.invokeOnCompletion {
-            _loadingState.value = false
+            _loading.value = false
         }
     }
 
@@ -78,47 +72,47 @@ constructor(
     private fun handleSocketChatEvent(socketEvent: ChatSocketEvent): Int {
         return when (socketEvent) {
             is ChatSocketEvent.SocketConnectEvent -> {
-                _loadingState.value = false
+                _loading.value = false
                 SUCCESS_STATE
             }
             is ChatSocketEvent.SocketConnectError -> {
-                _loadingState.value = false
+                _loading.value = false
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectAttempt -> {
-                _loadingState.value = true
+                _loading.value = true
                 LOADING_STATE
             }
             is ChatSocketEvent.SocketReconnectingEvent -> {
-                _loadingState.value = true
+                _loading.value = true
                 LOADING_STATE
             }
             is ChatSocketEvent.SocketReconnectError -> {
-                _loadingState.value = false
+                _loading.value = false
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectFailed -> {
-                _loadingState.value = false
+                _loading.value = false
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketReconnectEvent -> {
-                _loadingState.value = false
+                _loading.value = false
                 SUCCESS_STATE
             }
             is ChatSocketEvent.SocketConnectTimeOutEvent -> {
-                _loadingState.value = false
+                _loading.value = false
                 ERROR_STATE
             }
             is ChatSocketEvent.SocketPingEvent -> {
-                _loadingState.value = true
+                _loading.value = true
                 LOADING_STATE
             }
             is ChatSocketEvent.SocketPongEvent -> {
-                _loadingState.value = false
+                _loading.value = false
                 SUCCESS_STATE
             }
             else -> {
-                _loadingState.value = false
+                _loading.value = false
                 _snackBar.value = null
                 ERROR_STATE
             }
