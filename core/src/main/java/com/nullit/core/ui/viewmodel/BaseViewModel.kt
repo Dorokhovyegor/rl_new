@@ -1,5 +1,6 @@
 package com.nullit.core.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,11 @@ abstract class BaseViewModel() : ViewModel() {
     val snackbar: LiveData<String?>
         get() = _snackBar
 
-    protected val _loading = MutableLiveData<Boolean>()
+    protected var _loading: MutableLiveData<Boolean>
+    init {
+        _loading = MutableLiveData<Boolean>()
+        _loading.value = false
+    }
     val progressBar: LiveData<Boolean>
         get() = _loading
 
@@ -26,6 +31,7 @@ abstract class BaseViewModel() : ViewModel() {
             }
             is WrapperResponse.NetworkError -> {
                 if (response.code == 401) {
+                    Log.e("BaseViewModel", "handleErrorResponse ${response}")
                     _endSession.value = true
                 }
                 _snackBar.value = response.errorMessage

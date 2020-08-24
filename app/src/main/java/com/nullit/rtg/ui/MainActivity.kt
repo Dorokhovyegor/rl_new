@@ -3,21 +3,22 @@ package com.nullit.rtg.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.nullit.core.ui.EndSessionListener
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.R
 import com.nullit.rtg.ui.auth.AuthActivity
 import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
 import com.nullit.rtg.util.setupWithNavController
-import dagger.android.AndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), EndSessionListener {
+
+    @Inject
+    lateinit var sharedPrefsManager: SharedPrefsManager
 
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
@@ -26,14 +27,11 @@ class MainActivity : DaggerAppCompatActivity(), EndSessionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionBar?.hide()
-        supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             setupBottomNavigation()
         }
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        subscribeObserver(savedInstanceState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -49,18 +47,16 @@ class MainActivity : DaggerAppCompatActivity(), EndSessionListener {
             supportFragmentManager,
             R.id.main_host_fragment
         )
-        controller.observe(this, Observer { navController ->
-            setupActionBarWithNavController(navController)
-        })
         currentNavController = controller
     }
 
-    private fun subscribeObserver(savedInstanceState: Bundle?) {
-
-    }
-
     override fun logOut() {
-        navigateToAuthActivity()
+        var result = sharedPrefsManager.deleteAllProperties()
+        if (result == 1) {
+            navigateToAuthActivity()
+        } else {
+            // todo как такое возможно?
+        }
     }
 
     private fun navigateToAuthActivity() {

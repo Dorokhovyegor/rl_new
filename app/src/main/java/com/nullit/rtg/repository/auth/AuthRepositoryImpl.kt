@@ -4,9 +4,10 @@ import com.google.gson.JsonObject
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.core.persistance.entities.UserProperties
 import com.nullit.core.repo.JobManager
+import com.nullit.core.repo.WrapperResponse
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.api.ApiService
 import com.nullit.rtg.api.dto.LoginResponse
-import com.nullit.core.repo.WrapperResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -17,7 +18,8 @@ class AuthRepositoryImpl
 @Inject constructor(
     private val userDao: UserDao,
     private val apiService: ApiService,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val sharedPrefsManager: SharedPrefsManager
 ) : JobManager(), AuthRepository {
 
     override suspend fun attemptLogin(
@@ -39,6 +41,7 @@ class AuthRepositoryImpl
     }
 
     override suspend fun saveUserDataToDb(user: UserProperties): Long {
-       return userDao.insertUser(user = user)
+        sharedPrefsManager.saveUserProperties(user)
+        return userDao.insertUser(user = user)
     }
 }

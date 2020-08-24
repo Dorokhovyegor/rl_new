@@ -2,14 +2,14 @@ package com.nullit.rtg.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nullit.core.StringProvider
+import com.nullit.core.repo.WrapperResponse
+import com.nullit.core.ui.viewmodel.BaseViewModel
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.R
 import com.nullit.rtg.mappers.UserMapper
 import com.nullit.rtg.repository.auth.AuthRepository
-import com.nullit.core.repo.WrapperResponse
-import com.nullit.core.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class AuthViewModel
         _loading.value = true
         val job = viewModelScope.launch {
             val response = authRepository.attemptLogin(login, password)
-            if (response is WrapperResponse.SuccessResponse){
+            if (response is WrapperResponse.SuccessResponse) {
                 val preparedUserProperties =
                     userMapper.fromLoginResponseToUserProperties(response.body)
                 val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)

@@ -3,6 +3,7 @@ package com.nullit.features_chat.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.nullit.core.exceptions.UnsupportedActivityException
 import com.nullit.core.ui.EndSessionListener
@@ -13,6 +14,11 @@ val ARG_CHAT = "chatId"
 abstract class BaseChatFragment : DaggerFragment() {
 
     private var endSessionListener: EndSessionListener? = null
+
+    override fun onResume() {
+        super.onResume()
+        observeSessionState()
+    }
 
     abstract protected fun observeSessionState()
 
@@ -26,4 +32,5 @@ abstract class BaseChatFragment : DaggerFragment() {
             endSessionListener = context
         } else throw UnsupportedActivityException("You need to use Activity, which implementing EndSessionListener")
     }
+
 }

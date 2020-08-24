@@ -1,15 +1,17 @@
 package com.nullit.rtg.di.modules
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import com.nullit.core.Constants.Companion.SHARED_PREFS_NAME
 import com.nullit.core.persistance.AppDataBase
 import com.nullit.core.persistance.dao.DialogDao
 import com.nullit.core.persistance.dao.UserDao
-import com.nullit.rtg.api.ApiService
-import com.nullit.rtg.repository.auth.AuthRepository
-import com.nullit.rtg.repository.auth.AuthRepositoryImpl
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -25,6 +27,27 @@ import javax.inject.Singleton
 
 @Module
 class AppModule {
+
+    @Singleton
+    @Provides
+    fun provideSharedPrefs(application: Application): SharedPreferences {
+        return application.getSharedPreferences(
+            SHARED_PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun providerSharedPrefsManager(sharedPreferences: SharedPreferences): SharedPrefsManager {
+        return SharedPrefsManager(sharedPreferences)
+    }
+
+    @Singleton
+    @Provides
+    fun provideJsonParser(): JsonParser {
+        return JsonParser()
+    }
 
     @Singleton
     @Provides

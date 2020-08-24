@@ -1,13 +1,20 @@
 package com.nullit.features_chat.ui.chat
 
-import android.util.Log
-import androidx.lifecycle.*
-import com.nullit.core.StringProvider
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import com.nullit.core.repo.WrapperResponse
 import com.nullit.core.ui.viewmodel.BaseViewModel
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.features_chat.chatservice.ChatSocketEvent
+import com.nullit.features_chat.mappers.MessageMapper
 import com.nullit.features_chat.repository.ChatRepository
 import com.nullit.features_chat.repository.ChatRepositoryImpl
+import com.nullit.features_chat.ui.models.MessageModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +28,9 @@ const val ERROR_STATE = 2
 class ChatViewModel
 @Inject
 constructor(
-    private val stringProvider: StringProvider,
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val sharedPrefsManager: SharedPrefsManager,
+    private val messageMapper: MessageMapper
 ) : BaseViewModel() {
 
     val socketConnectionState: LiveData<Int> =
@@ -44,21 +52,28 @@ constructor(
         }
     }
 
-    fun sendMessage(message: String, chatId: Int) {
-        Log.e("ChatViewModel", "call method $message, $chatId")
-        val sendMessageJob = viewModelScope.launch {
-            _loading.value = true
-            if (message.trim().isEmpty()) {
-                _snackBar.value = "Введите текст"
-            } else {
-                val result = chatRepository.sendMessage(message, chatId)
-                if (result is WrapperResponse.NetworkError || result is WrapperResponse.GenericError<*>) {
-                    _snackBar.value = "Не удалось отправить сообщение"
+    @ExperimentalCoroutinesApi
+    fun messageFlow(): Flow<MessageModel> {
+        return (chatRepository as ChatRepositoryImpl).messageFlow().map {
+            val userId = sharedPrefsManager.getUserId()
+            messageMapper.fromMessageDtoToMessageModel(it, userId)
+        }
+    }
+
+    fun sendMessage(messageText: String, chatId: Int) {
+        if (messageText.isNotBlank()) {
+            val sendMessageJob = viewModelScope.launch {
+                _loading.value = true
+                if (!messageText.trim().isEmpty()) {
+                    val result = chatRepository.sendMessage(messageText, chatId)
+                    if (result is WrapperResponse.NetworkError || result is WrapperResponse.GenericError<*>) {
+                        _snackBar.value = "Не удалось отправить сообщение"
+                    }
                 }
             }
-        }
-        sendMessageJob.invokeOnCompletion {
-            _loading.value = false
+            sendMessageJob.invokeOnCompletion {
+                _loading.value = false
+            }
         }
     }
 

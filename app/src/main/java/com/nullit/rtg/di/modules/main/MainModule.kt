@@ -4,6 +4,8 @@ import android.app.Application
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.features_chat.R
 import com.nullit.features_chat.api.ApiService
@@ -20,10 +22,13 @@ import retrofit2.Retrofit
 @Module
 class MainModule {
 
+
+
+
     @MainScope
     @Provides
-    fun provideEventService(): EventService {
-        return EventServiceImpl()
+    fun provideEventService(gson: Gson, jsonParser: JsonParser): EventService {
+        return EventServiceImpl(gson, jsonParser)
     }
 
     @MainScope

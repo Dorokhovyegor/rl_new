@@ -13,7 +13,8 @@ class Constants {
         const val EVENT_DISCONNECT = Socket.EVENT_DISCONNECT
         const val EVENT_CONNECT_ERROR = Socket.EVENT_CONNECT_ERROR
         const val EVENT_CONNECT_TIMEOUT = Socket.EVENT_CONNECT_TIMEOUT
-        const val EVENT_NEW_MESSAGE = ".ChatMessage"
+        const val EVENT_NEW_MESSAGE = "App\\Events\\ChatMessage"
+        const val EVENT_SUBSCRIBE_WITH_TOKEN = "subscribe"
         const val DIALOGS_PER_PAGE = 10
     }
 }

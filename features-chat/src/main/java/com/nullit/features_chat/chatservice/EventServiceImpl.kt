@@ -3,9 +3,22 @@ package com.nullit.features_chat.chatservice
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.google.gson.JsonSyntaxException
+import com.nullit.core.utils.buildJSONForSocketConnection
+import com.nullit.features_chat.chatservice.dto.MessageDto
 import com.nullit.features_chat.utils.Constants
+import com.nullit.features_chat.utils.Constants.Companion.EVENT_NEW_MESSAGE
+import com.nullit.features_chat.utils.Constants.Companion.EVENT_SUBSCRIBE_WITH_TOKEN
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import org.json.JSONObject
 import java.net.URISyntaxException
 import javax.inject.Inject
@@ -13,14 +26,18 @@ import javax.inject.Inject
 
 class EventServiceImpl
 @Inject
-constructor() : ChatEventService {
+constructor(
+    private val gson: Gson,
+    private val jsonParser: JsonParser
+) : ChatEventService {
 
     lateinit var socket: Socket
-
     private var _socketEvent = MutableLiveData<ChatSocketEvent>()
-
     override val socketEvent: LiveData<ChatSocketEvent>
         get() = _socketEvent
+
+    private var chatId: Int? = null
+    private var token: String? = null
 
     private fun prepareOptionsAndReturn(): IO.Options {
         // i believe it will be useful
@@ -29,27 +46,45 @@ constructor() : ChatEventService {
 
     @SuppressWarnings("unchecked")
     override suspend fun connect(token: String, chatId: Int) {
-        if (!::socket.isInitialized) {
-            try {
-                socket = IO.socket(Constants.SOCKET_HOST_NAME, prepareOptionsAndReturn())
-                socket.connect()
-                subscribeOnDefaultEvents()
-                socket.emit("subscribe", JSONObject().apply {
-                    put("channel", "private-chat-${chatId}")
-                    put("auth", JSONObject().apply {
-                        put("headers", JSONObject().apply {
-                            put("Authorization", token)
-                        })
-                    })
-                }).on("App\\Events\\ChatMessage") { message ->
-                    message?.forEach {
-                        Log.e("EventServiceImpl", it.toString())
-                    }
-                }
+        this.chatId = chatId
+        this.token = token
+        try {
+            socket = IO.socket(Constants.SOCKET_HOST_NAME, prepareOptionsAndReturn())
+            socket.connect()
+            subscribeOnDefaultEvents()
+            socket.emit(
+                EVENT_SUBSCRIBE_WITH_TOKEN,
+                JSONObject().buildJSONForSocketConnection(token, chatId)
+            )
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+    }
 
-            } catch (e: URISyntaxException) {
+    @ExperimentalCoroutinesApi
+    fun messageFlow(): Flow<MessageDto> = callbackFlow {
+        val callback = object : SocketCallBack<MessageDto> {
+            override fun onNext(msg: MessageDto) {
+                Log.e("ServiceImplementation", msg.toString())
+                offer(msg)
+            }
+
+            override fun onError(t: Throwable) {
+                cancel(CancellationException("API Error"))
+            }
+        }
+        socket.on(EVENT_NEW_MESSAGE) { message ->
+            try {
+                val jsonString = jsonParser.parse(message[1].toString())
+                val model = gson.fromJson<MessageDto>(jsonString, MessageDto::class.java)
+                callback.onNext(model)
+            } catch (e: JsonSyntaxException) {
+                callback.onError(e)
                 e.printStackTrace()
             }
+        }
+        awaitClose {
+            socket.disconnect()
         }
     }
 
@@ -90,7 +125,14 @@ constructor() : ChatEventService {
 
     override fun subscribeOnReconnectEvent() {
         socket.on(Socket.EVENT_RECONNECT) {
+            Log.e("EventServiceImpl", Socket.EVENT_RECONNECT)
             _socketEvent.postValue(ChatSocketEvent.SocketReconnectEvent)
+            if (token != null && chatId != null) {
+                socket.emit(
+                    EVENT_SUBSCRIBE_WITH_TOKEN,
+                    JSONObject().buildJSONForSocketConnection(token!!, chatId!!)
+                )
+            }
         }
     }
 
@@ -129,4 +171,9 @@ constructor() : ChatEventService {
             _socketEvent.postValue(ChatSocketEvent.SocketPongEvent)
         }
     }
+}
+
+interface SocketCallBack<DataClass> {
+    fun onNext(msg: DataClass)
+    fun onError(t: Throwable)
 }

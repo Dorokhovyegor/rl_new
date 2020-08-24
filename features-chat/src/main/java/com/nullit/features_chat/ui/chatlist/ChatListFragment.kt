@@ -1,6 +1,7 @@
 package com.nullit.features_chat.ui.chatlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,6 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
 
     @Inject
     lateinit var requestManager: RequestManager
-
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     lateinit var chatListViewModel: ChatListViewModel
@@ -50,15 +50,14 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        chatListViewModel =
-            ViewModelProvider(this, viewModelProviderFactory)[ChatListViewModel::class.java]
+        chatListViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatListViewModel::class.java]
         chatListViewModel.requestDialogListOnPage(0)
         initRecyclerView()
         subscribeObserver()
         if (savedInstanceState == null) {
             // load firstPage
         }
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun subscribeObserver() {

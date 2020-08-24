@@ -1,6 +1,7 @@
 package com.nullit.rtg.di.modules.auth
 
 import com.nullit.core.persistance.dao.UserDao
+import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.api.ApiService
 import com.nullit.rtg.di.scopes.AuthScope
 import com.nullit.rtg.repository.auth.AuthRepository
@@ -22,9 +23,14 @@ class AuthModule {
     @Provides
     fun provideAuthRepository(
         apiService: ApiService,
-        userDao: UserDao
+        userDao: UserDao,
+        sharedPrefsManager: SharedPrefsManager
     ): AuthRepository {
-        return AuthRepositoryImpl(apiService = apiService, userDao = userDao)
+        return AuthRepositoryImpl(
+            apiService = apiService,
+            userDao = userDao,
+            sharedPrefsManager = sharedPrefsManager
+        )
     }
 
 

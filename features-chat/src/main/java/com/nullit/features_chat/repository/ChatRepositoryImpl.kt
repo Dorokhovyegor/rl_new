@@ -10,11 +10,14 @@ import com.nullit.features_chat.api.dto.SendTextMessageDto
 import com.nullit.features_chat.chatservice.ChatSocketEvent
 import com.nullit.features_chat.chatservice.EventService
 import com.nullit.features_chat.chatservice.EventServiceImpl
+import com.nullit.features_chat.chatservice.dto.MessageDto
 import com.nullit.features_chat.mappers.DialogMapper
 import com.nullit.features_chat.ui.models.DialogModel
 import com.nullit.features_chat.utils.Constants.Companion.DIALOGS_PER_PAGE
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -31,7 +34,6 @@ constructor(
 ) : JobManager(), ChatRepository {
 
     lateinit var token: String
-
     val connectionState: LiveData<ChatSocketEvent>
         get() = (eventService as EventServiceImpl).socketEvent
 
@@ -48,6 +50,11 @@ constructor(
         val userProperties = userDao.requestUserInfo()
         token = userProperties?.token?.generateBearerToken() ?: ""
         eventService.connect(token, chatId)
+    }
+
+    @ExperimentalCoroutinesApi
+    fun messageFlow(): Flow<MessageDto> {
+        return (eventService as EventServiceImpl).messageFlow()
     }
 
     override suspend fun disconnect() {
@@ -79,11 +86,6 @@ constructor(
                 wrapperResponse as WrapperResponse.GenericError<List<DialogModel>>
             }
         }
-    }
-
-    override suspend fun subscribeOnMessages(): Flow<JSONObject> {
-        TODO("Not yet implemented")
-        // save every message to local db
     }
 
     override suspend fun saveMessageToLocalDb(message: JSONObject) {

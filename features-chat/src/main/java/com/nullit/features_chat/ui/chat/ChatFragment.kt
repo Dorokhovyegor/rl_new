@@ -6,34 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.nullit.core.StringProvider
 import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.ARG_CHAT
 import com.nullit.features_chat.ui.BaseChatFragment
+import com.nullit.features_chat.ui.adapters.MessageRecyclerViewAdapter
 import com.nullit.features_chat.utils.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 private const val ARH_CHAT = "chatId"
 
 class ChatFragment : BaseChatFragment() {
-
-    @Inject
-    lateinit var stringProvider: StringProvider
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var chatViewModel: ChatViewModel
-    private var chatId: Int? = 1
+    protected lateinit var messageAdapter: MessageRecyclerViewAdapter
 
-    override fun onStart() {
-        super.onStart()
-        if (arguments?.getInt(ARG_CHAT) == null) {
-            findNavController().popBackStack()
-        }
-        chatId = arguments?.getInt(ARG_CHAT)
-    }
+    var chatId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,21 +39,46 @@ class ChatFragment : BaseChatFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (arguments?.getInt(ARG_CHAT) == null) {
+            findNavController().popBackStack()
+        }
+        chatId = arguments?.getInt(ARG_CHAT)
+
         chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
         toolBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
         editTextLayout.setEndIconOnClickListener {
-            chatId?.let { it1 -> chatViewModel.sendMessage(editText.text.toString(), it1) }
+            chatId?.let { it1 ->
+                chatViewModel.sendMessage(editText.text.toString(), it1)
+                editText.setText("")
+            }
         }
+        initRecyclerView()
         connect(chatId!!)
         subscribeObserver()
+    }
+
+    private fun initRecyclerView() {
+        msgRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+            messageAdapter = MessageRecyclerViewAdapter()
+            adapter = messageAdapter
+        }
     }
 
     private fun subscribeObserver() {
         chatViewModel.socketConnectionState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
-                SUCCESS_STATE -> toolBar.title = "Чат"
+                SUCCESS_STATE -> {
+                    toolBar.title = "Чат"
+                    lifecycleScope.launchWhenStarted {
+                        chatViewModel.messageFlow().collect {
+                            messageAdapter.appendToList(it)
+                            msgRecyclerView.smoothScrollToPosition(0)
+                        }
+                    }
+                }
                 ERROR_STATE -> toolBar.title = "Ошибка"
                 LOADING_STATE -> toolBar.title = "Подключение..."
             }
