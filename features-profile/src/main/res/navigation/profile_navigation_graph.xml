@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.nullit.features_profile.ui.ProfileFragment"
+        android:name="com.nullit.features_profile.ui.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_editProfileInfoFragment"
@@ -13,6 +13,6 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileInfoFragment"
-        android:name="com.nullit.features_profile.ui.EditProfileInfoFragment"
+        android:name="com.nullit.features_profile.ui.profile.EditProfileInfoFragment"
         android:label="EditProfileInfoFragment" />
 </navigation>

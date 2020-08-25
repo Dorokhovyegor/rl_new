@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.nullit.core.utils.ViewModelProviderFactory
 import com.nullit.rtg.ui.MainViewModel
 import com.nullit.rtg.ui.auth.AuthViewModel
-import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

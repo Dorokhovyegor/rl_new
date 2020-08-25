@@ -18,5 +18,4 @@ interface UserDao {
 
     @Query("DELETE from user_properties")
     suspend fun deleteUser(): Int
-
 }

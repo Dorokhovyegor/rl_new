@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -34,16 +35,36 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation project(':core')
 
     def material_version = "1.2.0"
     implementation "com.google.android.material:material:$material_version"
 
-    def constraint_layout_version = "2.0.0-rc1"
+    def circle_image_view = "3.1.0"
+    implementation "de.hdodenhof:circleimageview:${circle_image_view}"
+
+    def constraint_layout_version = "2.0.0"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    def retrofit2_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.1"
+
+    def rxjava_version_android = "3.0.0"
+    def rxjava_version = "3.0.5"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxjava_version_android"
+    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+
+    def glide_version = "4.11.0"
+    implementation "com.github.bumptech.glide:glide:${glide_version}"
+    kapt "com.github.bumptech.glide:compiler:${glide_version}"
+
 }

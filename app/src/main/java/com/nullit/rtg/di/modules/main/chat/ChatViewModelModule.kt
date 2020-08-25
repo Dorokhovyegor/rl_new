@@ -1,4 +1,4 @@
-package com.nullit.rtg.di.modules.main
+package com.nullit.rtg.di.modules.main.chat
 
 import androidx.lifecycle.ViewModel
 import com.nullit.features_chat.ui.chat.ChatViewModel
@@ -9,8 +9,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class MainViewModelModule {
-
+abstract class ChatViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ChatViewModel::class)
@@ -20,5 +19,4 @@ abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(ChatListViewModel::class)
     abstract fun bindChatListViewModel(chatViewModel: ChatListViewModel): ViewModel
-
 }

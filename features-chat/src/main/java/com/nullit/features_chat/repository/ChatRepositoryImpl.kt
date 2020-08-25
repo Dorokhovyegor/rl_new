@@ -42,7 +42,7 @@ constructor(
         chatId: Int
     ): WrapperResponse<SendTextMessageDto> {
         return safeApiCall(dispatcher) {
-            apiService.sendTextMessage(token = token, chatId = chatId, msg = message)
+            apiService.sendTextMessage(token = token.generateBearerToken(), chatId = chatId, msg = message)
         }
     }
 

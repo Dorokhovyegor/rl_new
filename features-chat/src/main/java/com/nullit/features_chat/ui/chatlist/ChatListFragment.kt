@@ -1,7 +1,6 @@
 package com.nullit.features_chat.ui.chatlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.BaseChatFragment
 import com.nullit.features_chat.ui.chatlist.adapters.ChatListAdapter
 import com.nullit.features_chat.ui.models.DialogModel
-import com.nullit.features_chat.utils.ViewModelProviderFactory
+import com.nullit.core.utils.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.fragment_chat_list.*
 import javax.inject.Inject
 
@@ -38,6 +37,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
     lateinit var requestManager: RequestManager
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
+
     lateinit var chatListViewModel: ChatListViewModel
     private lateinit var recyclerAdapter: ChatListAdapter
 

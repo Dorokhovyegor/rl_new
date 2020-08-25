@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -12,6 +15,8 @@ import com.nullit.core.persistance.AppDataBase
 import com.nullit.core.persistance.dao.DialogDao
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.core.utils.SharedPrefsManager
+import com.nullit.features_chat.R
+import com.nullit.rtg.di.scopes.MainScope
 import com.nullit.rtg.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -41,6 +46,25 @@ class AppModule {
     @Provides
     fun providerSharedPrefsManager(sharedPreferences: SharedPreferences): SharedPrefsManager {
         return SharedPrefsManager(sharedPreferences)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideGlideInstance(
+        application: Application,
+        requestOptions: RequestOptions
+    ): RequestManager {
+        return Glide.with(application)
+            .setDefaultRequestOptions(requestOptions)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRequestOptions(): RequestOptions {
+        return RequestOptions
+            .placeholderOf(R.mipmap.image)
+            .error(R.mipmap.image)
     }
 
     @Singleton

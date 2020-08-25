@@ -15,7 +15,7 @@ import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.ARG_CHAT
 import com.nullit.features_chat.ui.BaseChatFragment
 import com.nullit.features_chat.ui.adapters.MessageRecyclerViewAdapter
-import com.nullit.features_chat.utils.ViewModelProviderFactory
+import com.nullit.core.utils.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject

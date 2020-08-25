@@ -8,7 +8,7 @@ import com.nullit.core.repo.WrapperResponse
 
 abstract class BaseViewModel() : ViewModel() {
 
-    private val _endSession = MutableLiveData<Boolean>()
+    protected val _endSession = MutableLiveData<Boolean>()
     val endSession: LiveData<Boolean>
         get() = _endSession
 
@@ -31,7 +31,6 @@ abstract class BaseViewModel() : ViewModel() {
             }
             is WrapperResponse.NetworkError -> {
                 if (response.code == 401) {
-                    Log.e("BaseViewModel", "handleErrorResponse ${response}")
                     _endSession.value = true
                 }
                 _snackBar.value = response.errorMessage

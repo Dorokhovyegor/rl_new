@@ -1,15 +1,29 @@
-package com.nullit.features_chat.ui
+package com.nullit.features_profile.ui.profile
 
 import android.content.Context
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.nullit.core.exceptions.UnsupportedActivityException
 import com.nullit.core.ui.EndSessionListener
+import com.nullit.core.utils.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-val ARG_CHAT = "chatId"
+abstract class BaseProfileFragment : DaggerFragment() {
 
-abstract class BaseChatFragment : DaggerFragment() {
-
+    @Inject
+    lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private var endSessionListener: EndSessionListener? = null
+    lateinit var profileViewModel: ProfileViewModel
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.run {
+            profileViewModel =
+                ViewModelProvider(this, viewModelProviderFactory)[ProfileViewModel::class.java]
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -28,5 +42,4 @@ abstract class BaseChatFragment : DaggerFragment() {
             endSessionListener = context
         } else throw UnsupportedActivityException("You need to use Activity, which implementing EndSessionListener")
     }
-
 }

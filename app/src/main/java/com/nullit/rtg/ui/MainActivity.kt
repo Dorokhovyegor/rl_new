@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.nullit.core.ui.EndSessionListener
 import com.nullit.core.utils.SharedPrefsManager
+import com.nullit.core.utils.ViewModelProviderFactory
 import com.nullit.rtg.R
 import com.nullit.rtg.ui.auth.AuthActivity
-import com.nullit.rtg.ui.viewmodel.ViewModelProviderFactory
 import com.nullit.rtg.util.setupWithNavController
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,8 +20,6 @@ class MainActivity : DaggerAppCompatActivity(), EndSessionListener {
     @Inject
     lateinit var sharedPrefsManager: SharedPrefsManager
 
-    @Inject
-    lateinit var providerFactory: ViewModelProviderFactory
     lateinit var mainViewModel: MainViewModel
     private var currentNavController: LiveData<NavController>? = null
 
