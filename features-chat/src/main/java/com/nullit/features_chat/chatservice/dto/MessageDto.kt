@@ -12,7 +12,7 @@ data class MessageInfo(
 
 data class Message(
     @SerializedName("type") val type: String,
-    @SerializedName("text") val textMessage: String,
+    @SerializedName("text") val textMessage: String? = "",
     @SerializedName("chat_id") val chatId: Int,
     @SerializedName("user_id") val userId: Int,
     @SerializedName("updated_at") val updatedAt: String,

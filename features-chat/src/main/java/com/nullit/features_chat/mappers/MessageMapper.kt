@@ -22,7 +22,7 @@ constructor(
                     messageDto.dataMessage.message.messageId,
                     currentUserId,
                     stringProvider.convertToPrettyDate(messageDto.dataMessage.message.createdAt),
-                    messageDto.dataMessage.message.textMessage
+                    messageDto.dataMessage.message.textMessage ?: "НЛО повлияло на это сообщение, текста нет"
                 )
             }
             else -> {
@@ -30,7 +30,7 @@ constructor(
                     messageDto.dataMessage.message.messageId,
                     currentUserId,
                     stringProvider.convertToPrettyDate(messageDto.dataMessage.message.createdAt),
-                    messageDto.dataMessage.message.textMessage
+                    messageDto.dataMessage.message.textMessage ?: "НЛО повлияло на это сообщение, текста нет"
                 )
             }
         }
