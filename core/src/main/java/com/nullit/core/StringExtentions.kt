@@ -7,5 +7,10 @@ fun Int.generatePathToDrawable(): String {
 }
 
 fun String.generateBearerToken(): String {
-    return "Bearer $this"
+    return if (this.contains("Bearer")) {
+        this
+    } else {
+        "Bearer $this"
+    }
 }
+

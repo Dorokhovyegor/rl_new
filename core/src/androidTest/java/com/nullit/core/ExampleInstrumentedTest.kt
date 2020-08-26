@@ -3,7 +3,7 @@ package com.nullit.core
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nullit.core.persistance.AppDataBase
+import com.nullit.core.persistance.MainDataBase
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.core.persistance.entities.UserProperties
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DatabaseTest {
 
-    lateinit var db: AppDataBase
+    lateinit var db: MainDataBase
     lateinit var userDao: UserDao
 
 
@@ -28,7 +28,7 @@ class DatabaseTest {
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            AppDataBase::class.java
+            MainDataBase::class.java
         ).build()
         userDao = db.getUserDao()
     }

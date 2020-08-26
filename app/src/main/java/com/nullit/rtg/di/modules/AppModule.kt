@@ -11,12 +11,11 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.nullit.core.Constants.Companion.SHARED_PREFS_NAME
-import com.nullit.core.persistance.AppDataBase
-import com.nullit.core.persistance.dao.DialogDao
+import com.nullit.core.persistance.MainDataBase
+import com.nullit.features_chat.persistance.dao.DialogDao
 import com.nullit.core.persistance.dao.UserDao
 import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.features_chat.R
-import com.nullit.rtg.di.scopes.MainScope
 import com.nullit.rtg.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -97,21 +96,15 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providerRoomDataBase(application: Application): AppDataBase {
-        return Room.databaseBuilder(application, AppDataBase::class.java, AppDataBase.DB_NAME)
+    fun providerRoomDataBase(application: Application): MainDataBase {
+        return Room.databaseBuilder(application, MainDataBase::class.java, MainDataBase.DB_NAME)
             .build()
     }
 
     @Singleton
     @Provides
-    fun providerUserDao(appDataBase: AppDataBase): UserDao {
-        return appDataBase.getUserDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideDialogDao(appDataBase: AppDataBase): DialogDao {
-        return appDataBase.getDialogDao()
+    fun providerUserDao(mainDataBase: MainDataBase): UserDao {
+        return mainDataBase.getUserDao()
     }
 
     @Singleton

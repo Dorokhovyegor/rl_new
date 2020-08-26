@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import com.nullit.core.utils.hideKeyboard
+import com.nullit.core.utils.setVisible
 import com.nullit.rtg.R
 import com.nullit.rtg.ui.MainActivity
 import com.nullit.rtg.ui.common.BaseAuthFragment
-import com.nullit.rtg.util.setVisible
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseAuthFragment() {
@@ -40,13 +41,14 @@ class LoginFragment : BaseAuthFragment() {
                 loginEditText.text.toString().trim(),
                 passwordEditText.text.toString().trim()
             )
+            this.hideKeyboard(requireContext(), loginEditText)
         }
     }
 
     private fun subscribeObservers() {
-        viewModel.progressBar.observe(viewLifecycleOwner, Observer {
-            circularProgress.setVisible(it)
-            backgroundProgress.setVisible(it)
+        viewModel.progressBar.observe(viewLifecycleOwner, Observer { visibility ->
+            circularProgress.setVisible(visibility)
+            backgroundProgress.setVisible(visibility)
         })
 
         viewModel.snackbar.observe(viewLifecycleOwner, Observer { msg ->

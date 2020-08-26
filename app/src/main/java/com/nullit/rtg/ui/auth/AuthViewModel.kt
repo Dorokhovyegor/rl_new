@@ -1,5 +1,6 @@
 package com.nullit.rtg.ui.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.nullit.rtg.R
 import com.nullit.rtg.mappers.UserMapper
 import com.nullit.rtg.repository.auth.AuthRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 class AuthViewModel
@@ -30,27 +32,33 @@ class AuthViewModel
             _snackBar.value = "Заполните пустые поля"
             return
         }
-        _loading.value = true
         val job = viewModelScope.launch {
+            _loading.value = true
             val response = authRepository.attemptLogin(login, password)
             if (response is WrapperResponse.SuccessResponse) {
                 val preparedUserProperties =
                     userMapper.fromLoginResponseToUserProperties(response.body)
                 val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)
                 if (saveResult >= 0) {
-                    _snackBar.value =
-                        stringProvider.provideString(R.string.login_message_success_login)
+                    _snackBar.value = stringProvider.provideString(R.string.login_message_success_login)
                     _successLogin.value = true
                 } else {
-                    _snackBar.value =
-                        stringProvider.provideString(R.string.login_message_failed_login)
+                    _snackBar.value = stringProvider.provideString(R.string.login_message_failed_login)
                 }
             } else {
                 handleErrorResponse(response)
             }
+
         }
-        job.invokeOnCompletion {
-            _loading.value = false
+        job.invokeOnCompletion { error ->
+            if (error == null) {
+                // job completed normally
+                _loading.value = false
+
+            } else {
+                // job completed with error
+                _loading.value = false
+            }
         }
     }
 

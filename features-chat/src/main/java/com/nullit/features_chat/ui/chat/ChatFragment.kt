@@ -16,6 +16,7 @@ import com.nullit.features_chat.ui.ARG_CHAT
 import com.nullit.features_chat.ui.BaseChatFragment
 import com.nullit.features_chat.ui.adapters.MessageRecyclerViewAdapter
 import com.nullit.core.utils.ViewModelProviderFactory
+import com.nullit.core.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -46,6 +47,7 @@ class ChatFragment : BaseChatFragment() {
 
         chatViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatViewModel::class.java]
         toolBar.setNavigationOnClickListener {
+            this.hideKeyboard(requireContext(), toolBar)
             findNavController().popBackStack()
         }
         editTextLayout.setEndIconOnClickListener {
