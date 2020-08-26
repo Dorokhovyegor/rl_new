@@ -16,8 +16,13 @@ data class DialogEntity(
     @ColumnInfo(name = "updated_at")
     val updatedAt: String,
     @ColumnInfo(name = "last_message")
-    val lastMessage: String
-)
+    val lastMessage: String?
+) {
+    companion object{
+        val PERSON_TYPE = "person"
+        val GROUP_TYPE = "group"
+    }
+}
 
 data class DialogWithMessage(
     @Embedded

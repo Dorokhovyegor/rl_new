@@ -11,8 +11,17 @@ interface DialogDao {
     @Query("SELECT * FROM dialog")
     suspend fun getDialogs(): List<DialogWithMembers>
 
+    @Query("""
+        DELETE FROM dialog WHERE dialog.id = :dialogId
+    """)
+    suspend fun deleteDialogWithId(dialogId: Int): Int
+
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDialogWithMembers(dialogEntity: DialogEntity): Long
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDialogsWithMembers(dialogEntity: List<DialogEntity>): List<Long>
 
 }

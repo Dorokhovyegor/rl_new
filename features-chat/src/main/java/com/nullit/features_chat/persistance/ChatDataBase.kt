@@ -13,7 +13,7 @@ import com.nullit.features_chat.persistance.entity.MessageEntity
 abstract class ChatDataBase : RoomDatabase() {
     abstract fun getDialogDao(): DialogDao
     abstract fun getMessage(): MessageDao
-    abstract fun changeMemberDao(): ChatMemberDao
+    abstract fun catMemberDao(): ChatMemberDao
 
     companion object {
         const val DB_NAME = "msg_db"

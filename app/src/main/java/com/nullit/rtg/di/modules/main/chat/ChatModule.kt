@@ -57,7 +57,7 @@ class ChatModule {
     @ChatFeatureScope
     @Provides
     fun provideChatMemberDao(chatDataBase: ChatDataBase): ChatMemberDao {
-        return chatDataBase.changeMemberDao()
+        return chatDataBase.catMemberDao()
     }
 
     @ChatFeatureScope
