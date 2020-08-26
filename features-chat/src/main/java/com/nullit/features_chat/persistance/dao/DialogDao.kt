@@ -13,6 +13,6 @@ interface DialogDao {
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDialogWithMembers(dialogEntity: DialogEntity): Int
+    suspend fun insertDialogWithMembers(dialogEntity: DialogEntity): Long
 
 }
