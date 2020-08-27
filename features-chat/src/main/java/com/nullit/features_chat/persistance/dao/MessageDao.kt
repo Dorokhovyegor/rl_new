@@ -11,11 +11,16 @@ import com.nullit.features_chat.persistance.entity.MessageEntity
 interface MessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMessagesIntoDialog(vararg messages: MessageEntity)
+    suspend fun insertMessageIntoDialog(msg: MessageEntity)
 
-    @Query("""
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMessagesIntoDialog(messages: List<MessageEntity>)
+
+    @Query(
+        """
         SELECT * FROM message WHERE chatId = :dialogId
-    """)
+    """
+    )
     suspend fun getLastMessages(dialogId: Int): List<MessageEntity>
 
 }
