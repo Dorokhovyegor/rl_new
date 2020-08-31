@@ -17,4 +17,5 @@
     <string name="chat_state_connected">Подключено</string>
     <string name="chat_state_error_connection">Ошибка подключения</string>
     <string name="chat_state_connecting">Подключение…</string>
+    <string name="retry">Еще раз</string>
 </resources>

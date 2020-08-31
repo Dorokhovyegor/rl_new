@@ -11,12 +11,12 @@ data class DialogEntity(
     val title: String,
     @ColumnInfo(name = "type")
     val type: String?,
-    @ColumnInfo(name = "created_at")
-    val createdAt: String,
     @ColumnInfo(name = "updated_at")
     val updatedAt: String,
     @ColumnInfo(name = "last_message")
-    val lastMessage: String?
+    val lastMessage: String?,
+    @ColumnInfo(name = "avatar")
+    val avatar: String
 ) {
     companion object{
         val PERSON_TYPE = "person"

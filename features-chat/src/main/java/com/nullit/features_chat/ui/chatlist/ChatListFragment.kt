@@ -8,18 +8,25 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.google.android.material.snackbar.Snackbar
+import com.nullit.core.utils.ViewModelProviderFactory
 import com.nullit.features_chat.R
 import com.nullit.features_chat.ui.BaseChatFragment
 import com.nullit.features_chat.ui.chatlist.adapters.ChatListAdapter
+import com.nullit.features_chat.ui.chatlist.adapters.DialogsLoadStateAdapter
 import com.nullit.features_chat.ui.models.DialogModel
-import com.nullit.core.utils.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.fragment_chat_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,10 +38,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ChatListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener {
+class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener, CoroutineScope {
+
+    private var dialogsJob: Job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + dialogsJob
 
     @Inject
     lateinit var requestManager: RequestManager
+
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
@@ -50,33 +63,35 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        chatListViewModel = ViewModelProvider(this, viewModelProviderFactory)[ChatListViewModel::class.java]
-        chatListViewModel.requestDialogListOnPage(0)
+        chatListViewModel =
+            ViewModelProvider(this, viewModelProviderFactory)[ChatListViewModel::class.java]
         initRecyclerView()
-        subscribeObserver()
+        startListeningDialogsFlow()
+        initListeners()
         if (savedInstanceState == null) {
             // load firstPage
         }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun subscribeObserver() {
-        chatListViewModel.dialogList.observe(viewLifecycleOwner, Observer { list ->
-            recyclerAdapter.apply {
-                preloadGlideImages(requestManager, list)
-                submitList(list)
-            }
-        })
+    private fun initListeners() {
+        swipeRefresh.setOnRefreshListener {
+            dialogsJob.cancel()
+            recyclerAdapter.refresh()
+        }
+    }
 
-        chatListViewModel.snackbar.observe(viewLifecycleOwner, Observer { snackBarMessage ->
-            view?.let {
-                Snackbar.make(it, snackBarMessage.toString(), Snackbar.LENGTH_LONG).show()
+    private fun startListeningDialogsFlow() {
+        dialogsJob.cancel()
+        dialogsJob = lifecycleScope.launch {
+            chatListViewModel.dialogList.collectLatest { pagingData ->
+                recyclerAdapter.submitData(pagingData)
             }
-        })
 
-        chatListViewModel.progressBar.observe(viewLifecycleOwner, Observer { loading ->
-            progressCircular.visibility = if (loading) View.VISIBLE else View.GONE
-        })
+            recyclerAdapter.loadStateFlow.collectLatest { loadStates ->
+                swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
+            }
+        }
     }
 
     override fun observeSessionState() {
@@ -94,18 +109,15 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
                 requestManager,
                 this@ChatListFragment
             )
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val lastPosition = layoutManager.findLastVisibleItemPosition()
-                    if (lastPosition == recyclerAdapter.itemCount.minus(1)) {
-                        chatListViewModel.requestDialogListOnPage(recyclerAdapter.itemCount)
-                    }
-                }
-            })
-            adapter = recyclerAdapter
+            adapter = recyclerAdapter.withLoadStateFooter(
+                footer = DialogsLoadStateAdapter(recyclerAdapter)
+            )
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dialogsJob.cancel()
     }
 
     override fun onDialogClick(position: Int, dialog: DialogModel) {

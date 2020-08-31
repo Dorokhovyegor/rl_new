@@ -1,27 +1,20 @@
 package com.nullit.features_chat.persistance.dao
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.nullit.features_chat.persistance.entity.DialogEntity
 import com.nullit.features_chat.persistance.entity.DialogWithMembers
 
 @Dao
 interface DialogDao {
-
-    @Transaction
-    @Query("SELECT * FROM dialog")
-    suspend fun getDialogs(): List<DialogWithMembers>
-
-    @Query("""
-        DELETE FROM dialog WHERE dialog.id = :dialogId
-    """)
-    suspend fun deleteDialogWithId(dialogId: Int): Int
-
-    @Transaction
+    // paging stuff
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDialogWithMembers(dialogEntity: DialogEntity): Long
+    suspend fun insertAllDialogs(dialogEntity: List<DialogEntity>)
 
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDialogsWithMembers(dialogEntity: List<DialogEntity>): List<Long>
+    @Query("SELECT * FROM dialog order by updated_at desc")
+    fun pagingSource(): PagingSource<Int, DialogEntity>
+
+    @Query("DELETE FROM dialog")
+    suspend fun clearAllDialogs()
 
 }

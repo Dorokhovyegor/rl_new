@@ -1,18 +1,15 @@
 package com.nullit.rtg.ui.auth
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nullit.core.StringProvider
 import com.nullit.core.repo.WrapperResponse
 import com.nullit.core.ui.viewmodel.BaseViewModel
-import com.nullit.core.utils.SharedPrefsManager
 import com.nullit.rtg.R
 import com.nullit.rtg.mappers.UserMapper
 import com.nullit.rtg.repository.auth.AuthRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 class AuthViewModel
@@ -40,10 +37,12 @@ class AuthViewModel
                     userMapper.fromLoginResponseToUserProperties(response.body)
                 val saveResult = authRepository.saveUserDataToDb(preparedUserProperties)
                 if (saveResult >= 0) {
-                    _snackBar.value = stringProvider.provideString(R.string.login_message_success_login)
+                    _snackBar.value =
+                        stringProvider.provideString(R.string.login_message_success_login)
                     _successLogin.value = true
                 } else {
-                    _snackBar.value = stringProvider.provideString(R.string.login_message_failed_login)
+                    _snackBar.value =
+                        stringProvider.provideString(R.string.login_message_failed_login)
                 }
             } else {
                 handleErrorResponse(response)
@@ -51,13 +50,14 @@ class AuthViewModel
 
         }
         job.invokeOnCompletion { error ->
+            _loading.value = false
             if (error == null) {
                 // job completed normally
-                _loading.value = false
-
             } else {
                 // job completed with error
-                _loading.value = false
+                error.localizedMessage?.let {
+                    _snackBar.value = it
+                }
             }
         }
     }

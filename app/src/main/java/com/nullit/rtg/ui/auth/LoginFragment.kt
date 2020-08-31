@@ -2,6 +2,7 @@ package com.nullit.rtg.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,12 @@ class LoginFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         subscribeObservers()
+        //todo handle savedInstanceState
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //todo saveInstanceState
     }
 
     override fun onStart() {
@@ -37,11 +44,19 @@ class LoginFragment : BaseAuthFragment() {
 
     private fun initListeners() {
         loginButton.setOnClickListener {
-            viewModel.login(
-                loginEditText.text.toString().trim(),
-                passwordEditText.text.toString().trim()
-            )
-            this.hideKeyboard(requireContext(), loginEditText)
+
+        }
+        passwordEditText.setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                viewModel.login(
+                    loginEditText.text.toString().trim(),
+                    passwordEditText.text.toString().trim()
+                )
+                this.hideKeyboard(requireContext(), loginEditText)
+                true
+            } else {
+                false
+            }
         }
     }
 
@@ -50,14 +65,12 @@ class LoginFragment : BaseAuthFragment() {
             circularProgress.setVisible(visibility)
             backgroundProgress.setVisible(visibility)
         })
-
         viewModel.snackbar.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 Snackbar.make(view?.rootView!!, msg, Snackbar.LENGTH_SHORT).show()
                 viewModel.onSnackBarShown()
             }
         })
-
         viewModel.successLogin.observe(viewLifecycleOwner, Observer { authenticated ->
             if (authenticated) {
                 startActivity(Intent(requireActivity(), MainActivity::class.java))

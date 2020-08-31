@@ -44,7 +44,6 @@ constructor(
         return IO.Options()
     }
 
-    @SuppressWarnings("unchecked")
     override suspend fun connect(token: String, chatId: Int) {
         this.chatId = chatId
         this.token = token
@@ -62,10 +61,9 @@ constructor(
     }
 
     @ExperimentalCoroutinesApi
-    fun messageFlow(): Flow<MessageDto> = callbackFlow {
+    override fun messageFlow(): Flow<MessageDto> = callbackFlow {
         val callback = object : SocketCallBack<MessageDto> {
             override fun onNext(msg: MessageDto) {
-                Log.e("ServiceImplementation", msg.toString())
                 offer(msg)
             }
 
@@ -125,7 +123,6 @@ constructor(
 
     override fun subscribeOnReconnectEvent() {
         socket.on(Socket.EVENT_RECONNECT) {
-            Log.e("EventServiceImpl", Socket.EVENT_RECONNECT)
             _socketEvent.postValue(ChatSocketEvent.SocketReconnectEvent)
             if (token != null && chatId != null) {
                 socket.emit(

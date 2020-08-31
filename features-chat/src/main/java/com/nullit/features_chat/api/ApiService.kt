@@ -8,7 +8,7 @@ interface ApiService {
 
     @GET("/api/v1/chats")
     suspend fun requestDialogListByPage(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Header("Accept") accept: String = "application/json",
         @Query("qty") qty: Int,
         @Query("page") page: Int

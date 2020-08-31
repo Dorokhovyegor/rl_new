@@ -66,8 +66,9 @@ class ChatModule {
         eventService: EventService,
         apiService: ApiService,
         dialogMapper: DialogMapper,
-        userDao: UserDao
+        userDao: UserDao,
+        dialogDao: DialogDao
     ): ChatRepository {
-        return ChatRepositoryImpl(eventService, apiService, dialogMapper, userDao)
+        return ChatRepositoryImpl(eventService, apiService, dialogMapper, userDao, dialogDao)
     }
 }
