@@ -44,7 +44,11 @@ class LoginFragment : BaseAuthFragment() {
 
     private fun initListeners() {
         loginButton.setOnClickListener {
-
+            viewModel.login(
+                loginEditText.text.toString().trim(),
+                passwordEditText.text.toString().trim()
+            )
+            this.hideKeyboard(requireContext(), loginEditText)
         }
         passwordEditText.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {

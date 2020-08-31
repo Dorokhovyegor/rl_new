@@ -1,6 +1,7 @@
 package com.nullit.features_chat.ui.chatlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.nullit.core.utils.ViewModelProviderFactory
 import com.nullit.features_chat.R
@@ -40,6 +42,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener, CoroutineScope {
 
+    var listState: Bundle? = null
+
     private var dialogsJob: Job = Job()
 
     override val coroutineContext: CoroutineContext
@@ -62,7 +66,24 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
         return inflater.inflate(R.layout.fragment_chat_list, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("ChatListFragment", "onCreate")
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Log.e("ChatListFragment", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("ChatListFragment", "onResume")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         chatListViewModel =
             ViewModelProvider(this, viewModelProviderFactory)[ChatListViewModel::class.java]
         initRecyclerView()
@@ -70,9 +91,39 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
         initListeners()
         if (savedInstanceState == null) {
             // load firstPage
+        } else {
+            val localBundle = savedInstanceState["chatlistbundle"] as Bundle?
+            if (localBundle != null) {
+                val position = localBundle.getInt("rvposition")
+                Log.e("ChatListFragment", "восстановелние ${position}")
+                val lm = chatListRecyclerView.layoutManager
+                if (lm != null) {
+                    val count = lm.itemCount
+                    if (position != RecyclerView.NO_POSITION && position < count) {
+                        lm.scrollToPosition(position)
+                    }
+                }
+            }
         }
-        super.onViewCreated(view, savedInstanceState)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBundle("chatlistbundle", listState)
+        Log.e("ChatListFragment", "onSaveInstanceState")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("ChatListFragment", "onPause")
+        val layoutManager = chatListRecyclerView.layoutManager as LinearLayoutManager
+        val scrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+        Log.e("ChatListFragment", "$scrollPosition")
+        listState = bundleOf(
+            "rvposition" to scrollPosition
+        )
+    }
+
 
     private fun initListeners() {
         swipeRefresh.setOnRefreshListener {
@@ -93,6 +144,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
             }
         }
     }
+
 
     override fun observeSessionState() {
         chatListViewModel.endSession.observe(viewLifecycleOwner, Observer {
@@ -117,6 +169,7 @@ class ChatListFragment : BaseChatFragment(), ChatListAdapter.DialogClickListener
 
     override fun onStop() {
         super.onStop()
+        Log.e("ChatListFragment", "onStop")
         dialogsJob.cancel()
     }
 
